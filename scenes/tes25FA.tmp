@@ -1,0 +1,50 @@
+[gd_scene load_steps=9 format=3 uid="uid://jru40qn0yql6"]
+
+[ext_resource type="Shader" path="res://shaders/pixel.gdshader" id="1_s06ja"]
+[ext_resource type="Texture2D" uid="uid://nkd68vm11ehr" path="res://textures/Renard.jpg" id="2_yg82v"]
+[ext_resource type="Script" path="res://scripts/planet_generation.gd" id="3_u71s5"]
+[ext_resource type="Shader" path="res://shaders/pixel_filter.gdshader" id="4_1bd2e"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k1xf0"]
+shader = ExtResource("1_s06ja")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g1yp7"]
+shader = ExtResource("1_s06ja")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c7ok2"]
+size = Vector2(88, 88)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j1cm3"]
+shader = ExtResource("4_1bd2e")
+
+[node name="TestScene" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_k1xf0")
+position = Vector2(876, 381)
+scale = Vector2(0.319005, 0.319005)
+texture = ExtResource("2_yg82v")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+material = SubResource("ShaderMaterial_g1yp7")
+position = Vector2(292, 261)
+scale = Vector2(210.693, 210.693)
+texture = ExtResource("2_yg82v")
+script = ExtResource("3_u71s5")
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2(956, 93)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource("RectangleShape2D_c7ok2")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
+material = SubResource("ShaderMaterial_k1xf0")
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_yg82v")
+
+[node name="Renard2" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_j1cm3")
+position = Vector2(368.75, 332.5)
+scale = Vector2(0.790158, 0.754525)
+texture = ExtResource("2_yg82v")
