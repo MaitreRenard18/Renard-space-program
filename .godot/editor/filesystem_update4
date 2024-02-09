@@ -1,4 +1,0 @@
-res://scenes/tilemap_test.tscn
-res://shaders/pixel.gdshader
-res://shaders/pixel_filter.gdshader
-res://scripts/tilemap_earth_generation.gd
