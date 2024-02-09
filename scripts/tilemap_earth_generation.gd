@@ -1,29 +1,23 @@
 extends TileMap
 
-@export var radius := 32;
+@export var radius := 64;
 
 var source_id := 0;
 
+func get_height():
+	return 0;
 
 func _ready():
-	var height_noise = FastNoiseLite.new();
-	height_noise.noise_type = height_noise.TYPE_SIMPLEX;
+	position.y = radius * tile_set.tile_size.y * scale.y;
 	
-	for x in range(-radius, 1):
-		var theta := acos(float(x) / float(radius));
-		var y := int(round(sin(theta) * radius));
+	for x in range(-radius, radius + 1):
+		var y_limit = sqrt(radius ** 2 - x ** 2);
 		
-		var next_theta = acos(float(x + 1) / float(radius));
-		var next_y := int(round(sin(next_theta) * radius));
-		
-		for i in range(max(abs(next_y - y), 1)):
-			if next_y < y:
-				i *= -1
-			
-			set_cell(0, Vector2i(x, y + i), source_id, Vector2i(0, 0));
-			set_cell(0, Vector2i(x, -y - i), source_id, Vector2i(0, 0));
-			set_cell(0, Vector2i(-x, y + i), source_id, Vector2i(0, 0));
-			set_cell(0, Vector2i(-x, -y - i), source_id, Vector2i(0, 0));
+		for y in range(-y_limit, y_limit + 1):
+			var distance_from_center = int(sqrt(x ** 2 + y ** 2));
+
+			set_cells_terrain_connect(0, [Vector2i(x, y)], 0, 0);
+
 
 func _process(delta):
 	pass

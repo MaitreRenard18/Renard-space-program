@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://rfp6gpxt2nfu"]
+
+[ext_resource type="Texture2D" uid="uid://l6p8hat5xnjo" path="res://data/test_tilemap.png" id="1_1tmg2"]
+[ext_resource type="Script" path="res://scripts/tilemap_earth_generation.gd" id="1_6w4bu"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hlh1q"]
+texture = ExtResource("1_1tmg2")
+texture_region_size = Vector2i(8, 8)
+0:0/0 = 0
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_f3h84"]
+tile_size = Vector2i(8, 8)
+sources/0 = SubResource("TileSetAtlasSource_hlh1q")
+
+[node name="Node2D" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_f3h84")
+format = 2
+script = ExtResource("1_6w4bu")
+
+[node name="Camera2D" type="Camera2D" parent="."]
