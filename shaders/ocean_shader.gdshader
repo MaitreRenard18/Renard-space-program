@@ -3,7 +3,7 @@ const float pixel_size =  16.0;
 
 
 void vertex() {
-	// Called for every vertex the material is visible on.
+	// VERTEX = VERTEX * float((int(TIME * 20.0) + VERTEX_ID) % 4) / 2.75f;
 }
 
 void fragment() {
@@ -12,6 +12,9 @@ void fragment() {
     float y = floor(UV.y * pixel_size) / pixel_size;
     
     COLOR = texture(TEXTURE, vec2(x, y));
+	COLOR.r = 0.1;
+	COLOR.g = 0.4;
+	COLOR.b = 1.0;
 }
 
 

@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://rfp6gpxt2nfu"]
+[gd_scene load_steps=4 format=3 uid="uid://rfp6gpxt2nfu"]
 
 [ext_resource type="Script" path="res://scripts/tilemap_earth_generation.gd" id="1_6w4bu"]
 [ext_resource type="TileSet" uid="uid://btkvfl4qkyyue" path="res://data/8x8_earth_tilemap.tres" id="1_n6bwj"]
 [ext_resource type="Script" path="res://scripts/free_cam.gd" id="3_om0jh"]
-[ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://textures/rocket.png" id="4_mx8ki"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -19,9 +18,3 @@ noise_type = 3
 ignore_rotation = false
 script = ExtResource("3_om0jh")
 planet = NodePath("../TileMap")
-
-[node name="Rocket" type="Sprite2D" parent="."]
-z_index = 10
-texture_filter = 1
-position = Vector2(0, -49)
-texture = ExtResource("4_mx8ki")

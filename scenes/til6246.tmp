@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://rfp6gpxt2nfu"]
+
+[ext_resource type="Script" path="res://scripts/tilemap_earth_generation.gd" id="1_6w4bu"]
+[ext_resource type="TileSet" uid="uid://btkvfl4qkyyue" path="res://data/earth_tilemap.tres" id="1_n6bwj"]
+[ext_resource type="Script" path="res://scripts/free_cam.gd" id="3_om0jh"]
+[ext_resource type="Shader" path="res://shaders/ocean_shader.gdshader" id="4_2qgne"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iy0uy"]
+shader = ExtResource("4_2qgne")
+
+[sub_resource type="SphereMesh" id="SphereMesh_ysu7u"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+z_index = 10
+texture_filter = 1
+tile_set = ExtResource("1_n6bwj")
+format = 2
+script = ExtResource("1_6w4bu")
+radius = null
+sea_level = null
+noise_type = 3
+seed = null
+noise_strenght = null
+noise_frequency = null
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("3_om0jh")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+material = SubResource("ShaderMaterial_iy0uy")
+position = Vector2(-1296.12, 163)
+scale = Vector2(568.894, 508)
+mesh = SubResource("SphereMesh_ysu7u")

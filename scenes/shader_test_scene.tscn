@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3 uid="uid://byu50upgxhnj4"]
+
+[ext_resource type="Shader" path="res://shaders/pixel_shader.gdshader" id="1_16ynf"]
+[ext_resource type="Texture2D" uid="uid://nkd68vm11ehr" path="res://textures/Renard.jpg" id="2_ft4ju"]
+
+[sub_resource type="Gradient" id="Gradient_b61ji"]
+offsets = PackedFloat32Array(0, 0.636364)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2wdt4"]
+gradient = SubResource("Gradient_b61ji")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rrl5x"]
+shader = ExtResource("1_16ynf")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yqii3"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mkbrh"]
+material = SubResource("StandardMaterial3D_yqii3")
+
+[node name="Node2D" type="Node2D"]
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(47, 57)
+energy = 2.01
+texture = SubResource("GradientTexture2D_2wdt4")
+
+[node name="Renard" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_rrl5x")
+position = Vector2(24, 45)
+scale = Vector2(0.045, 0.045)
+texture = ExtResource("2_ft4ju")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.767105)
+projection = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewport"]
+transform = Transform3D(0.449238, -0.00106716, 0.000315195, 0.00106799, 0.449237, -0.00118116, -0.0003124, 0.0011819, 0.449238, 0, 0, 0)
+mesh = SubResource("CylinderMesh_mkbrh")
