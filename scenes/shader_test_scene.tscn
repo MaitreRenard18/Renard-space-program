@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://byu50upgxhnj4"]
+[gd_scene load_steps=10 format=3 uid="uid://byu50upgxhnj4"]
 
 [ext_resource type="Shader" path="res://shaders/pixel_shader.gdshader" id="1_16ynf"]
 [ext_resource type="Texture2D" uid="uid://nkd68vm11ehr" path="res://textures/Renard.jpg" id="2_ft4ju"]
+[ext_resource type="Material" uid="uid://bs10akik3g81c" path="res://materials/toon_material.tres" id="3_uuila"]
 
 [sub_resource type="Gradient" id="Gradient_b61ji"]
 offsets = PackedFloat32Array(0, 0.636364)
@@ -16,10 +17,11 @@ fill_to = Vector2(0, 0)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rrl5x"]
 shader = ExtResource("1_16ynf")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yqii3"]
+[sub_resource type="CylinderMesh" id="CylinderMesh_ai2xf"]
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_mkbrh"]
-material = SubResource("StandardMaterial3D_yqii3")
+[sub_resource type="SphereMesh" id="SphereMesh_bk3rk"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_n8xoq"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -35,11 +37,29 @@ scale = Vector2(0.045, 0.045)
 texture = ExtResource("2_ft4ju")
 
 [node name="SubViewport" type="SubViewport" parent="."]
-
-[node name="Camera3D" type="Camera3D" parent="SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.767105)
-projection = 1
+transparent_bg = true
+fsr_sharpness = 0.1
+canvas_item_default_texture_filter = 0
+size = Vector2i(12, 40)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewport"]
-transform = Transform3D(0.449238, -0.00106716, 0.000315195, 0.00106799, 0.449237, -0.00118116, -0.0003124, 0.0011819, 0.449238, 0, 0, 0)
-mesh = SubResource("CylinderMesh_mkbrh")
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_ai2xf")
+surface_material_override/0 = ExtResource("3_uuila")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewport/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("SphereMesh_bk3rk")
+surface_material_override/0 = ExtResource("3_uuila")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="SubViewport/MeshInstance3D"]
+transform = Transform3D(0.199979, 0, -0.00291809, 0, 0.4, 0, 0.00291809, 0, 0.199979, -0.648801, -0.462304, 0.557992)
+mesh = SubResource("BoxMesh_n8xoq")
+surface_material_override/0 = ExtResource("3_uuila")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="SubViewport"]
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.93934)
+projection = 1
+size = 4.0
