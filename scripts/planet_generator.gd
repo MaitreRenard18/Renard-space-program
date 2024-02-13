@@ -12,21 +12,20 @@ extends Node2D
 @export_category("Physics")
 @export var mass: float
 
+var atmosphere_shader = preload("res://shaders/atmosphere.gdshader")
 
 func get_noise(theta: float) -> float:
 	return 1.0
 
 
 func _ready():
+	# Generate planet geometry
 	vertex_count = max(vertex_count, 3)
 	
 	if seed == -1:
 		seed = randi_range(0, 2 ** 16)
 		
 	var circular_noise = CircularNoise.new(seed, noise_frequency)
-	
-	print(circular_noise.get_noise(0.0))
-	print(circular_noise.get_noise(2 * PI))
 	
 	var step: float = (2 * PI) / vertex_count
 	var polygon: PackedVector2Array = []
@@ -40,6 +39,17 @@ func _ready():
 	
 	$Polygon2D.set_polygon(polygon)
 	$AnimatableBody2D/CollisionPolygon2D.set_polygon(polygon)
+	
+	# Set up atmosphere
+	var atmosphere = MeshInstance2D.new()
+	atmosphere.mesh = QuadMesh.new()
+	atmosphere.mesh.size = Vector2(radius, radius) * 3.0
+	
+	atmosphere.material = ShaderMaterial.new()
+	atmosphere.material.shader = atmosphere_shader
+	atmosphere.z_index = -1
+	
+	add_child(atmosphere)
 
 
 func _process(delta):
