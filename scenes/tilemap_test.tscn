@@ -7,18 +7,19 @@
 
 [node name="Node2D" type="Node2D"]
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="Planet" type="TileMap" parent="."]
 z_index = 10
 texture_filter = 1
 tile_set = ExtResource("1_n6bwj")
 format = 2
 script = ExtResource("1_6w4bu")
+radius = 512
 noise_type = 3
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("planet")]
 ignore_rotation = false
 script = ExtResource("3_om0jh")
-planet = NodePath("../TileMap")
+planet = NodePath("../Planet")
 
 [node name="Rocket" type="Sprite2D" parent="."]
 z_index = 10
