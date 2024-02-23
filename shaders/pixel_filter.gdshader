@@ -1,5 +1,5 @@
 shader_type canvas_item;
-const float pixel_size = 16.0;
+const float pixel_size = 4.0;
 
 uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
 

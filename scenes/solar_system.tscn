@@ -1,7 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://qmqknqdd1lia"]
+[gd_scene load_steps=3 format=3 uid="uid://qmqknqdd1lia"]
 
 [ext_resource type="PackedScene" uid="uid://b8htqe1fqofi2" path="res://scenes/planet.tscn" id="1_ip36i"]
+[ext_resource type="Script" path="res://scripts/freecam.gd" id="2_rkyqd"]
 
 [node name="SolarSystem" type="Node2D"]
 
 [node name="Planet" parent="." instance=ExtResource("1_ip36i")]
+noise_strenght = 0.01
+noise_frequency = 256.0
+vertex_count = 25000
+radius = 512.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+ignore_rotation = false
+rotation_smoothing_enabled = true
+script = ExtResource("2_rkyqd")

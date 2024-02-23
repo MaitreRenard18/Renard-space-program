@@ -24,8 +24,9 @@ func _ready():
 	
 	if seed == -1:
 		seed = randi_range(0, 2 ** 16)
-		
-	var circular_noise = CircularNoise.new(seed, noise_frequency)
+	
+	var circular_noise_0 = CircularNoise.new(seed, noise_frequency / 4)	
+	var circular_noise_1 = CircularNoise.new(seed, noise_frequency * 2)
 	
 	var step: float = (2 * PI) / vertex_count
 	var polygon: PackedVector2Array = []
@@ -34,7 +35,8 @@ func _ready():
 		var x: float = cos(theta) * radius
 		var y: float = sin(theta) * radius
 		
-		var height: float = circular_noise.get_noise(theta) * noise_strenght + 1
+		var height: float = circular_noise_0.get_noise(theta) * noise_strenght * 4 + 1
+		height += circular_noise_1.get_noise(theta) * noise_strenght / 2
 		polygon.append(Vector2(x * height, y * height))
 	
 	$Polygon2D.set_polygon(polygon)
@@ -50,6 +52,9 @@ func _ready():
 	atmosphere.z_index = -1
 	
 	add_child(atmosphere)
+	
+	# Move planet
+	position = Vector2(0, radius + circular_noise_0.get_noise(PI / 2) * noise_strenght + 1)
 
 
 func _process(delta):

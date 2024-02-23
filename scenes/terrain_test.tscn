@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://lrfoebimm2tr"]
+
+[ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://textures/rocket.png" id="2_v2oap"]
+[ext_resource type="Texture2D" uid="uid://njhhbteeemv4" path="res://textures/Tree.png" id="3_2hvwb"]
+
+[node name="TerrainTest" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+
+[node name="Rocket" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(30, -71)
+texture = ExtResource("2_v2oap")
+
+[node name="Tree" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-16, -45)
+scale = Vector2(1.02419, 1.02419)
+texture = ExtResource("3_2hvwb")
+
+[node name="Tree" type="Sprite2D" parent="Tree"]
+texture_filter = 1
+position = Vector2(-78.1102, -1.95276)
+scale = Vector2(1.02419, 1.02419)
+texture = ExtResource("3_2hvwb")
+
+[node name="Tree2" type="Sprite2D" parent="Tree"]
+texture_filter = 1
+position = Vector2(-155.244, -7.81103)
+scale = Vector2(1.02419, 1.02419)
+texture = ExtResource("3_2hvwb")
+
+[node name="Tree3" type="Sprite2D" parent="Tree"]
+texture_filter = 1
+position = Vector2(116.189, -1.95276)
+scale = Vector2(1.02419, 1.02419)
+texture = ExtResource("3_2hvwb")
+
+[node name="Tree4" type="Sprite2D" parent="Tree"]
+texture_filter = 1
+position = Vector2(188.441, -2.92914)
+scale = Vector2(1.02419, 1.02419)
+texture = ExtResource("3_2hvwb")
+
+[node name="Tree5" type="Sprite2D" parent="Tree"]
+texture_filter = 1
+position = Vector2(240.189, -2.92914)
+scale = Vector2(1.02419, 1.02419)
+texture = ExtResource("3_2hvwb")
+
+[node name="Terrain" type="Polygon2D" parent="."]
+color = Color(0.470588, 0.635294, 0.321569, 1)
+polygon = PackedVector2Array(-606, -59, -490, -90, -436, -95, -409, -97, -380, -93, -361, -87, -334, -81, -323, -74, -285, -47, -269, -39, -220, -32, -156, -32, -91, -24, 173, -21, 658, -28, 676, 378, -645, 353)
