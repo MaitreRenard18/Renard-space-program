@@ -1,4 +1,4 @@
-extends Camera2D
+extends CharacterBody2D
 
 @export var speed := 10
 
@@ -19,10 +19,11 @@ func _process(_delta):
 	elif Input.is_action_pressed("left"):
 		direction.x = -1
 
-	position += direction.normalized() / zoom * speed
+	position += direction.normalized() * speed
 
 	if Input.is_action_pressed("zoom_up"):
-		zoom += Vector2(0.2, 0.2) 
+		$Camera2D.zoom += Vector2(0.05, 0.05) 
 
 	if Input.is_action_pressed("zoom_down"):
-		zoom -= Vector2(0.2, 0.2)
+		if $Camera2D.zoom.x > 0.05 and $Camera2D.zoom.y > 0.05:
+			$Camera2D.zoom -= Vector2(0.05, 0.05)

@@ -1,17 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://qmqknqdd1lia"]
+[gd_scene load_steps=5 format=3 uid="uid://qmqknqdd1lia"]
 
 [ext_resource type="PackedScene" uid="uid://b8htqe1fqofi2" path="res://scenes/planet.tscn" id="1_ip36i"]
 [ext_resource type="Script" path="res://scripts/freecam.gd" id="2_rkyqd"]
+[ext_resource type="Script" path="res://scripts/pixel_filter.gd" id="3_cq6j0"]
+[ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://assets/rocket.png" id="4_j35av"]
 
 [node name="SolarSystem" type="Node2D"]
 
 [node name="Planet" parent="." instance=ExtResource("1_ip36i")]
+z_index = -2
 noise_strenght = 0.01
 noise_frequency = 256.0
 vertex_count = 25000
-radius = 512.0
+radius = 2048.0
+grass_density = 0.1
+tree_density = 0.01
 
-[node name="Camera2D" type="Camera2D" parent="."]
-ignore_rotation = false
-rotation_smoothing_enabled = true
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 script = ExtResource("2_rkyqd")
+
+[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
+ignore_rotation = false
+zoom = Vector2(3, 3)
+script = ExtResource("3_cq6j0")
+
+[node name="Rocket" type="Sprite2D" parent="."]
+position = Vector2(0, -46)
+texture = ExtResource("4_j35av")

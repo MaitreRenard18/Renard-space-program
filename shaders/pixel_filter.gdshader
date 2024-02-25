@@ -1,23 +1,31 @@
 shader_type canvas_item;
-const float pixel_size = 4.0;
 
-uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+// Variables changed by the script of the camera
+uniform float zoom;
+uniform vec2 position;
+uniform float rotation;
+
+// Get screen texture
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear;
 
 
-void vertex() {
-	// Called for every vertex the material is visible on.
-}
-
+// Called for every pixel the material is visible on
 void fragment() {
+	int scaled_pixel_size = int(zoom);
 	ivec2 screen_size = textureSize(SCREEN_TEXTURE, 0);
 	
-	float pixel_size_x = float(screen_size.x) / pixel_size;
-	float pixel_size_y =  float(screen_size.y) / pixel_size;
-	float x = floor(SCREEN_UV.x * pixel_size_x) / pixel_size_x;
-    float y = floor(SCREEN_UV.y * pixel_size_y) / pixel_size_y;
+	float x = float(int(FRAGCOORD.x) % scaled_pixel_size);
+	float y = float(int(FRAGCOORD.y) % scaled_pixel_size);
 	
-	COLOR = texture(SCREEN_TEXTURE, vec2(x, y));
+	x = FRAGCOORD.x + floor(float(scaled_pixel_size) / 2.0) - x;
+    y = FRAGCOORD.y + floor(float(scaled_pixel_size) / 2.0) - y;
+	
+	COLOR = texture(SCREEN_TEXTURE, vec2(x, y) / vec2(screen_size));
 }
+
+
+
+
 
 
 //void light() {

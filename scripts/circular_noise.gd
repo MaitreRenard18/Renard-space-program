@@ -4,23 +4,19 @@ var interpolation_function: int
 var step: float
 var points: Array = []
 
-const SMOOTHSTEP: int = 0
-const CUBIC: int = 1
 
-func _init(seed: int, frequency: float, function: int = SMOOTHSTEP) -> void:
-	interpolation_function = function
-	
-	var random_number_generator := RandomNumberGenerator.new()
-	random_number_generator.seed = seed
-	
+func _init(noise_seed: int, frequency: float) -> void:
+	seed(noise_seed)
 	step = (2 * PI) / frequency
 	
 	for i in range(frequency):
-		var rand_float = random_number_generator.randf()
-		if interpolation_function == CUBIC:
-			rand_float **= 3
-		
+		var rand_float = randf()
 		points.append(rand_float)
+
+
+func get_noise_normal_angle(theta: float) -> float:
+	var m: float = (-1 / _smoothstep_derivate(theta))
+	return theta + atan(m) + (PI / 2)
 
 
 func get_noise(theta: float) -> float:
@@ -35,22 +31,15 @@ func get_noise(theta: float) -> float:
 	return _interpolate(w - x0, y0, y1)
 
 
-func _smoothstep(w: float) -> float:
-	if w < 0.0: return 0.0
-	if w > 1.0: return 1.0
-	return w * w * (3.0 - 2.0 * w)
+func _smoothstep_derivate(x: float) -> float:
+	return -6 * x ** 2 + 6 * x
 
 
-func _cubic(w: float) -> float:
-	if w < 0.0: return 0.0
-	if w > 1.0: return 1.0
-	return w ** 3
+func _smoothstep(x: float) -> float:
+	if x < 0.0: return 0.0
+	if x > 1.0: return 1.0
+	return x * x * (3.0 - 2.0 * x)
 
 
-func _interpolate(w: float, x0: float, x1: float) -> float:
-	if interpolation_function == CUBIC:
-		return x0 + (x1 - x0) * _cubic(w)
-	
-	return x0 + (x1 - x0) * _smoothstep(w)
-		
-		
+func _interpolate(x: float, x0: float, x1: float) -> float:	
+	return x0 + (x1 - x0) * _smoothstep(x)

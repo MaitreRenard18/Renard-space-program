@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://njhhbteeemv4"
-path="res://.godot/imported/Tree.png-7c8c2c284a1ffd97f76ebc3e7c0ab15f.ctex"
+uid="uid://nkd68vm11ehr"
+path="res://.godot/imported/Renard.jpg-a286f6a312a7c266a6fbdce97ceba555.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/Tree.png"
-dest_files=["res://.godot/imported/Tree.png-7c8c2c284a1ffd97f76ebc3e7c0ab15f.ctex"]
+source_file="res://assets/Renard.jpg"
+dest_files=["res://.godot/imported/Renard.jpg-a286f6a312a7c266a6fbdce97ceba555.ctex"]
 
 [params]
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://byu50upgxhnj4"]
 
 [ext_resource type="Shader" path="res://shaders/pixel_shader.gdshader" id="1_16ynf"]
-[ext_resource type="Texture2D" uid="uid://nkd68vm11ehr" path="res://textures/Renard.jpg" id="2_ft4ju"]
+[ext_resource type="Texture2D" uid="uid://nkd68vm11ehr" path="res://assets/Renard.jpg" id="2_ft4ju"]
 [ext_resource type="Material" uid="uid://bs10akik3g81c" path="res://materials/toon_material.tres" id="3_uuila"]
 
 [sub_resource type="Gradient" id="Gradient_b61ji"]

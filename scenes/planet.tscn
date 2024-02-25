@@ -16,4 +16,5 @@ build_mode = 1
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 texture_repeat = 2
+color = Color(0.470588, 0.635294, 0.321569, 1)
 texture_scale = Vector2(2, 2)
