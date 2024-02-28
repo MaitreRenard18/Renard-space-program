@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://qmqknqdd1lia"]
+
+[ext_resource type="PackedScene" uid="uid://b8htqe1fqofi2" path="res://scenes/planet.tscn" id="1_ip36i"]
+[ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://textures/rocket.png" id="2_20sne"]
+[ext_resource type="Script" path="res://scripts/CelestialBody.gd" id="2_udl0t"]
+[ext_resource type="Script" path="res://scripts/rocket_w_gravity.gd" id="3_3tovm"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dh5c3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_46gxf"]
+radius = 200.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_omala"]
+size = Vector2(20, 95)
+
+[node name="SolarSystem" type="Node2D"]
+
+[node name="Planet" parent="." instance=ExtResource("1_ip36i")]
+
+[node name="RigidBody2D" type="RigidBody2D" parent="Planet"]
+mass = 100000.0
+physics_material_override = SubResource("PhysicsMaterial_dh5c3")
+script = ExtResource("2_udl0t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Planet/RigidBody2D"]
+shape = SubResource("CircleShape2D_46gxf")
+
+[node name="Fusée" type="RigidBody2D" parent="."]
+position = Vector2(0, -506)
+mass = 108.12
+script = ExtResource("3_3tovm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fusée"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_omala")
+
+[node name="Camera2D" type="Camera2D" parent="Fusée"]
+
+[node name="Sprite2D" type="Sprite2D" parent="Fusée"]
+texture_filter = 1
+texture = ExtResource("2_20sne")
