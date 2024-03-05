@@ -38,6 +38,7 @@ var atmosphere_shader: Resource = preload("res://shaders/atmosphere.gdshader")
 
 var circular_noise_0: CircularNoise
 var circular_noise_1: CircularNoise
+var montain_noise: CircularNoise
 
 # Functions
 func get_terrain_height(theta: float) -> float:
@@ -68,18 +69,25 @@ func _ready():
 	# Create noises
 	circular_noise_0 = CircularNoise.new(noise_seed, noise_frequency / 4)	
 	circular_noise_1 = CircularNoise.new(noise_seed, noise_frequency * 2)
-	
+
 	# Generate planet geometry
 	var step: float = (2 * PI) / vertex_count
 	var polygon: PackedVector2Array = []
+	var uv: PackedVector2Array = []
+
 	for i in range(vertex_count + 1 / 2):
 		# Get angle
 		var theta: float = i * step
 		
-		# Get vertex position
+		# Get vertex and uv position
 		var vertex_position = get_vertex_coordinates(theta)
+		var uv_position = Vector2(vertex_position.x / (get_terrain_height(0) + get_terrain_height(PI)), vertex_position.y / (get_terrain_height(PI / 2) + get_terrain_height(3 * PI / 2)))
+		uv_position /= 2
+		uv_position += Vector2(.25, .25)
+		
 		polygon.append(vertex_position)
-
+		uv.append(uv_position)
+		
 		# Add grass
 		if randf() < grass_density:
 			var grass = Sprite2D.new()
@@ -110,15 +118,15 @@ func _ready():
 			tree.position = vertex_position
 			tree.z_index = -1
 			add_child(tree)
-
 	
 	$Polygon2D.set_polygon(polygon)
+	$Polygon2D.set_uv(uv)
 	$AnimatableBody2D/CollisionPolygon2D.set_polygon(polygon)
 	
 	# Set up atmosphere
 	var atmosphere = MeshInstance2D.new()
 	atmosphere.mesh = QuadMesh.new()
-	atmosphere.mesh.size = Vector2(radius, radius) * 3.0
+	atmosphere.mesh.size = Vector2(radius, radius) * 2.5
 	
 	atmosphere.material = ShaderMaterial.new()
 	atmosphere.material.shader = atmosphere_shader

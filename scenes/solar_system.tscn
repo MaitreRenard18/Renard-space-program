@@ -9,10 +9,11 @@
 
 [node name="Planet" parent="." instance=ExtResource("1_ip36i")]
 z_index = -2
+rotation = 0.785398
 noise_strenght = 0.01
 noise_frequency = 256.0
 vertex_count = 25000
-radius = 2048.0
+radius = 4096.0
 grass_density = 0.1
 tree_density = 0.01
 
@@ -22,6 +23,7 @@ script = ExtResource("2_rkyqd")
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
 ignore_rotation = false
 zoom = Vector2(3, 3)
+position_smoothing_speed = 20.0
 script = ExtResource("3_cq6j0")
 
 [node name="Rocket" type="Sprite2D" parent="."]
