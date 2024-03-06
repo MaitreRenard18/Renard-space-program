@@ -9,16 +9,17 @@
 
 [node name="Planet" parent="." instance=ExtResource("1_ip36i")]
 z_index = -2
-rotation = 0.785398
 noise_strenght = 0.01
 noise_frequency = 256.0
+biome_frequency = 32
 vertex_count = 25000
 radius = 4096.0
-grass_density = 0.1
-tree_density = 0.01
+grass_density = 0.3
+tree_density = 0.02
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("planet")]
 script = ExtResource("2_rkyqd")
+planet = NodePath("../Planet")
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
 ignore_rotation = false

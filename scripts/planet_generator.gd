@@ -5,6 +5,7 @@ extends Node2D
 @export var noise_strenght: float
 @export var noise_frequency: float
 @export var noise_seed: int
+@export var biome_frequency: int
 
 @export_category("Generation Settings")
 @export var vertex_count: int
@@ -33,12 +34,30 @@ var small_grass_textures: Array = [
 	preload("res://assets/environnement/small_variations/rock_01.png")
 ]
 
+var small_desert_textures: Array = [
+	preload("res://assets/environnement/small_variations/dead_bush.png"),
+	preload("res://assets/environnement/small_variations/rock_01.png")
+]
+
+# Biomes
+var biomes: Dictionary = {
+	"grass": {
+		"color": Color(0.471, 0.635, 0.322, 1),
+	},
+	"desert": {
+		"color": Color(1, 0.86, 0.56, 1)
+	}
+}
+
 # Attributes
+var blank_texture = preload("res://assets/white_pixel.png")
+
 var atmosphere_shader: Resource = preload("res://shaders/atmosphere.gdshader")
+var planet_shadow_shader: Resource = preload("res://shaders/planet_shadow.gdshader")
 
 var circular_noise_0: CircularNoise
 var circular_noise_1: CircularNoise
-var montain_noise: CircularNoise
+var temperature_noise: CircularNoise
 
 # Functions
 func get_terrain_height(theta: float) -> float:
@@ -58,6 +77,53 @@ func get_vertex_coordinates(theta: float) -> Vector2:
 	return Vector2(x, y)
 
 
+func create_polygon2d(color: Color) -> Polygon2D:
+	var polygon: Polygon2D = Polygon2D.new()
+
+	polygon.color = color
+	polygon.texture = blank_texture 
+	
+	polygon.set_polygon([Vector2(0, 0)])
+	polygon.set_uv([Vector2(0.5, 0.5)])
+	polygon.material = ShaderMaterial.new()
+	polygon.material.shader = planet_shadow_shader
+
+	add_child(polygon)
+	return polygon
+
+
+func place_sprite(texture: Texture, theta: float) -> void:
+	var sprite = Sprite2D.new()
+	sprite.texture = texture
+	sprite.rotation = (get_vertex_coordinates(theta) - get_vertex_coordinates(theta - (2 * PI) / vertex_count)).angle() + PI
+	sprite.position = get_vertex_coordinates(theta)
+	sprite.z_index = -1
+	
+	add_child(sprite)
+
+
+func place_background_sprite(texture: Texture, theta: float) -> void:
+	var sprite = Sprite2D.new()
+	sprite.texture = texture
+	sprite.rotation = -theta - 3 * PI / 2
+
+	var depth: float = (1 - randf() / 10)
+	sprite.position = get_vertex_coordinates(theta) * (depth / 2 + 0.5)
+
+	sprite.scale = Vector2(depth, depth)
+	sprite.z_index = 1
+	add_child(sprite)
+
+
+func get_biome(theta: float) -> String:
+	var temperature: float = temperature_noise.get_noise(theta)
+	
+	if temperature < 0.5:
+		return "grass"
+	else:
+		return "desert"
+
+
 func _ready():
 	# Get vertex count
 	vertex_count = max(vertex_count, 3)
@@ -67,61 +133,73 @@ func _ready():
 		noise_seed = randi_range(0, 2 ** 16)
 	
 	# Create noises
-	circular_noise_0 = CircularNoise.new(noise_seed, noise_frequency / 4)	
-	circular_noise_1 = CircularNoise.new(noise_seed, noise_frequency * 2)
-
+	seed(noise_seed)
+	circular_noise_0 = CircularNoise.new(randi(), noise_frequency / 4)	
+	circular_noise_1 = CircularNoise.new(randi() , noise_frequency * 2)
+	temperature_noise = CircularNoise.new(randi(), biome_frequency)
+	
 	# Generate planet geometry
 	var step: float = (2 * PI) / vertex_count
-	var polygon: PackedVector2Array = []
-	var uv: PackedVector2Array = []
 
-	for i in range(vertex_count + 1 / 2):
+	var current_biome: String = get_biome(0)
+	var current_polygon: Polygon2D = create_polygon2d(biomes[current_biome]["color"])
+	
+	var global_polygon: PackedVector2Array = []
+	var polygon: PackedVector2Array = current_polygon.get_polygon()
+	var uv: PackedVector2Array = current_polygon.get_uv()
+	
+	for i in range(vertex_count + 1 / 2 + 1):
 		# Get angle
 		var theta: float = i * step
-		
+
 		# Get vertex and uv position
 		var vertex_position = get_vertex_coordinates(theta)
-		var uv_position = Vector2(vertex_position.x / (get_terrain_height(0) + get_terrain_height(PI)), vertex_position.y / (get_terrain_height(PI / 2) + get_terrain_height(3 * PI / 2)))
-		uv_position /= 2
-		uv_position += Vector2(.25, .25)
+		var uv_position = Vector2(vertex_position.x, vertex_position.y) / radius / 2 + Vector2(0.5, 0.5)
 		
+		global_polygon.append(vertex_position)
 		polygon.append(vertex_position)
 		uv.append(uv_position)
 		
-		# Add grass
-		if randf() < grass_density:
-			var grass = Sprite2D.new()
-			grass.texture = grass_textures[randi_range(0, grass_textures.size() - 1)]
-			grass.rotation = (vertex_position - polygon[i - 1]).angle() + PI
-			grass.position = vertex_position
-			grass.z_index = -1
-			add_child(grass)
-		
-		# Add background grass
-		if randf() < grass_density:
-			var grass = Sprite2D.new()
-			grass.texture = small_grass_textures[randi_range(0, small_grass_textures.size() - 1)]
-			grass.rotation = -theta - 3 * PI / 2
-
-			var depth: float = (1 - randf() / 10)
-			grass.position = vertex_position * (depth / 2 + 0.5)
-
-			grass.scale = Vector2(depth, depth)
-			grass.z_index = 1
-			add_child(grass)
-
-		# Add trees
+		# Add folliage
 		if randf() < tree_density:
-			var tree = Sprite2D.new()
-			tree.texture = load("res://assets/environnement/tree.png")
-			tree.rotation = (vertex_position - polygon[i - 1]).angle() + PI
-			tree.position = vertex_position
-			tree.z_index = -1
-			add_child(tree)
+			if current_biome == "grass":
+				place_sprite(load("res://assets/environnement/tree.png"), theta)
+			else:
+				place_sprite(load("res://assets/environnement/cactus.png"), theta)
+
+		if randf() < grass_density and current_biome == "grass":
+			place_sprite(grass_textures[randi_range(0, grass_textures.size() - 1)], theta)
+		
+		elif randf() < grass_density / 10 and current_biome == "desert":
+			place_sprite(load("res://assets/environnement/dead_bush.png"), theta)
+
+		# Add background folliage
+		if randf() < grass_density and current_biome == "grass":
+			place_background_sprite(small_grass_textures[randi_range(0, small_grass_textures.size() - 1)], theta)
+
+		elif randf() < grass_density / 10 and current_biome == "desert":
+			place_background_sprite(small_desert_textures[randi_range(0, small_desert_textures.size() - 1)], theta)
+		
+		# Get next biome
+		var biome: String = get_biome(theta + step)
+		if biome != current_biome:
+			current_polygon.set_polygon(polygon)
+			current_polygon.set_uv(uv)
+
+			current_biome = biome
+			current_polygon = create_polygon2d(biomes[current_biome]["color"])
+
+			polygon = current_polygon.get_polygon()
+			uv = current_polygon.get_uv()
+
+			polygon.append(vertex_position)
+			uv.append(uv_position)
 	
-	$Polygon2D.set_polygon(polygon)
-	$Polygon2D.set_uv(uv)
-	$AnimatableBody2D/CollisionPolygon2D.set_polygon(polygon)
+	current_polygon.set_polygon(polygon)
+	current_polygon.set_uv(uv)
+
+	# Set up collision
+	$AnimatableBody2D/CollisionPolygon2D.set_polygon(global_polygon)
 	
 	# Set up atmosphere
 	var atmosphere = MeshInstance2D.new()

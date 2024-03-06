@@ -9,7 +9,7 @@ func _init(noise_seed: int, frequency: float) -> void:
 	seed(noise_seed)
 	step = (2 * PI) / frequency
 	
-	for i in range(frequency):
+	for i in range(max(frequency, 1)):
 		var rand_float = randf()
 		points.append(rand_float)
 
