@@ -13,10 +13,7 @@ extends Node2D
 @export var radius: float
 
 @export_category("Atmosphere Settings")
-@export var planet_temperature: float
-@export var planet_humidity: float
-@export var temperature_variation: float
-@export var humidity_variation: float
+@export var temperature_frequency: float
 
 @export_category("Folliage Settings")
 @export_range(0, 1) var grass_density: float
@@ -63,7 +60,7 @@ var atmosphere_shader: Resource = preload("res://shaders/atmosphere.gdshader")
 var planet_shadow_shader: Resource = preload("res://shaders/planet_shadow.gdshader")
 
 var noise: FastNoiseLite
-var temperature_noise: FastNoiseLite
+var temperature_noise: CircularNoise
 
 
 # Functions
@@ -132,12 +129,9 @@ func place_background_sprite(texture: Texture, theta: float) -> void:
 
 
 func get_biome(theta: float) -> String:
-	var x: float = cos(theta)
-	var y: float = -sin(theta)
-	
-	var temperature: float = temperature_noise.get_noise_2d(x * temperature_variation, y * temperature_variation) + planet_temperature
+	var temperature: float = temperature_noise.get_noise(theta)
 
-	if temperature < 0.0:
+	if temperature > 0.5:
 		return "grass"
 	else:
 		return "desert"
@@ -156,9 +150,7 @@ func _ready():
 	noise.set_seed(noise_seed)
 	noise.set_noise_type(FastNoiseLite.TYPE_SIMPLEX)
 
-	temperature_noise = FastNoiseLite.new()
-	temperature_noise.set_seed(noise_seed + 1)
-	temperature_noise.set_noise_type(FastNoiseLite.TYPE_SIMPLEX)
+	temperature_noise = CircularNoise.new(noise_seed + 1, temperature_frequency)
 
 	# Generate planet geometry
 	var step: float = (2 * PI) / vertex_count

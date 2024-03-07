@@ -1,22 +1,26 @@
-[gd_scene load_steps=5 format=3 uid="uid://qmqknqdd1lia"]
+[gd_scene load_steps=6 format=3 uid="uid://qmqknqdd1lia"]
 
 [ext_resource type="PackedScene" uid="uid://b8htqe1fqofi2" path="res://scenes/planet.tscn" id="1_ip36i"]
 [ext_resource type="Script" path="res://scripts/freecam.gd" id="2_rkyqd"]
 [ext_resource type="Script" path="res://scripts/pixel_filter.gd" id="3_cq6j0"]
 [ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://assets/rocket.png" id="4_j35av"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rqn47"]
+size = Vector2(12, 92)
+
 [node name="SolarSystem" type="Node2D"]
 
 [node name="Planet" parent="." instance=ExtResource("1_ip36i")]
 z_index = -2
-noise_seed = -1
-number_of_layers = 2
-noise_strenght = 200.0
+position = Vector2(0, 4186.44)
+noise_seed = 50
+number_of_layers = 3
+noise_strenght = 150.0
 roughness = 32.0
 persistence = 0.1
 vertex_count = 25000
 radius = 4096.0
-temperature_variation = 64.0
+temperature_frequency = 16.0
 grass_density = 0.3
 tree_density = 0.02
 
@@ -30,6 +34,11 @@ zoom = Vector2(3, 3)
 position_smoothing_speed = 20.0
 script = ExtResource("3_cq6j0")
 
-[node name="Rocket" type="Sprite2D" parent="."]
-position = Vector2(0, -46)
+[node name="Rocket" type="RigidBody2D" parent="."]
+position = Vector2(0, -125)
+
+[node name="Sprite" type="Sprite2D" parent="Rocket"]
 texture = ExtResource("4_j35av")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rocket"]
+shape = SubResource("RectangleShape2D_rqn47")
