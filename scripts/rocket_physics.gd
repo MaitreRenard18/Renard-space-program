@@ -15,3 +15,4 @@ func _physics_process(delta):
 	rotation += rotation_direction * rotation_speed * delta
 	velocity.y += ((gravity * delta)*mass + (gravity / 60)) / 2  #gravité axe y
 	move_and_slide()
+	

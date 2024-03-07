@@ -1,20 +1,25 @@
-[gd_scene load_steps=7 format=3 uid="uid://qmqknqdd1lia"]
+[gd_scene load_steps=10 format=3 uid="uid://qmqknqdd1lia"]
 
 [ext_resource type="PackedScene" uid="uid://b8htqe1fqofi2" path="res://scenes/planet.tscn" id="1_ip36i"]
 [ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://textures/rocket.png" id="2_20sne"]
 [ext_resource type="Script" path="res://scripts/CelestialBody.gd" id="2_udl0t"]
 [ext_resource type="Script" path="res://scripts/rocket_w_gravity.gd" id="3_3tovm"]
+[ext_resource type="Texture2D" uid="uid://bpslsp7vumst2" path="res://icon.svg" id="5_5sdt1"]
+[ext_resource type="Script" path="res://scripts/explosive.gd" id="5_8lyeo"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_46gxf"]
-radius = 200.0
+radius = 920.85
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_omala"]
 size = Vector2(20, 95)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c4rq5"]
+
 [node name="SolarSystem" type="Node2D"]
 
 [node name="Planet" parent="." instance=ExtResource("1_ip36i")]
-radius = 500.0
+noise_strenght = 0.2
+radius = 1000.0
 
 [node name="RigidBody2D" type="RigidBody2D" parent="Planet"]
 mass = 1e+09
@@ -24,17 +29,51 @@ script = ExtResource("2_udl0t")
 shape = SubResource("CircleShape2D_46gxf")
 
 [node name="Fusée" type="RigidBody2D" parent="."]
-position = Vector2(0, -968)
-mass = 10.0
+position = Vector2(518, -1571)
 script = ExtResource("3_3tovm")
+is_sun = false
+is_object = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Fusée"]
 position = Vector2(0, -0.5)
+rotation = 1.5708
 shape = SubResource("RectangleShape2D_omala")
-
-[node name="Camera2D" type="Camera2D" parent="Fusée"]
-zoom = Vector2(0.5, 0.5)
 
 [node name="Sprite2D" type="Sprite2D" parent="Fusée"]
 texture_filter = 1
+rotation = 1.5708
 texture = ExtResource("2_20sne")
+
+[node name="Camera2D" type="Camera2D" parent="Fusée"]
+rotation = 1.5708
+zoom = Vector2(0.3, 0.3)
+
+[node name="Explosive" type="RigidBody2D" parent="."]
+position = Vector2(55, -1627)
+mass = 99999.0
+script = ExtResource("5_8lyeo")
+initial_velocity = Vector2(0, -1)
+is_sun = false
+is_object = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Explosive"]
+scale = Vector2(5, 5)
+shape = SubResource("RectangleShape2D_c4rq5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Explosive"]
+texture = ExtResource("5_5sdt1")
+
+[node name="Explosive2" type="RigidBody2D" parent="."]
+position = Vector2(245, -1418)
+mass = 1000.0
+script = ExtResource("5_8lyeo")
+initial_velocity = Vector2(0, -1)
+is_sun = false
+is_object = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Explosive2"]
+scale = Vector2(5, 5)
+shape = SubResource("RectangleShape2D_c4rq5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Explosive2"]
+texture = ExtResource("5_5sdt1")
