@@ -1,8 +1,17 @@
 extends RigidBody2D
 
 var G = 6.6743 * pow(10,-2)
-var initial_velocity:Vector2 = Vector2(200,100)
-var is_sun:bool = false
+var force = Vector2.ZERO
+var rotation_direction = 0
+
+
+
+@export_category("Object setting")
+@export var initial_velocity:Vector2 = Vector2.ZERO
+@export var is_sun:bool = true
+@export var is_object:bool = false
+@export var spin_power:int = 100000
+@export var engine_power:int = 5000
 
 func _ready():
 	linear_velocity = initial_velocity
@@ -12,6 +21,7 @@ func _physics_process(delta):
 	if !is_sun:
 		movement(delta)
 		Gravity(delta)
+		print(linear_velocity)
 	else:
 		linear_velocity = Vector2.ZERO
 
@@ -32,8 +42,9 @@ func Gravity(delta):
 			apply_central_force(-force)
 			
 func movement(delta):
-	var direction = get_global_mouse_position() - position
-	var force = direction*100
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT): 
-		apply_central_force(force)
+	if Input.is_action_pressed("up"): 
+		force = transform.x * engine_power
+		apply_force(force)
+	rotation_direction = Input.get_axis("left","right")
+	apply_torque(rotation_direction * spin_power)
 		
