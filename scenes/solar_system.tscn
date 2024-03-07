@@ -9,11 +9,14 @@
 
 [node name="Planet" parent="." instance=ExtResource("1_ip36i")]
 z_index = -2
-noise_strenght = 0.01
-noise_frequency = 256.0
-biome_frequency = 32
+noise_seed = -1
+number_of_layers = 2
+noise_strenght = 200.0
+roughness = 32.0
+persistence = 0.1
 vertex_count = 25000
 radius = 4096.0
+temperature_variation = 64.0
 grass_density = 0.3
 tree_density = 0.02
 

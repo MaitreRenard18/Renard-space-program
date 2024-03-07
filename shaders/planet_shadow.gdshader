@@ -17,6 +17,11 @@ void vertex() {
 }
 
 void fragment() {
+	// North pole and ocean
+	float pole_radius = 0.5;
+	vec2 offsetted_uv = UV - vec2(0.5, 0.5);
+	
+	// "Eclipse" effect
 	float angle = atan(sun_position.x, sun_position.y);
 	vec2 rotated_uv = rotate(UV, angle);
 

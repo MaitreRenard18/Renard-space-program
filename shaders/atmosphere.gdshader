@@ -39,10 +39,10 @@ void fragment() {
 	}
 	float sin_x = -sin(rotated_uv.x * PI) / 8.0;
 
-	if (sin_x + 0.45 > rotated_uv.y) { // Pitch black
+	if (sin_x + 0.45 > rotated_uv.y) {
 		COLOR.a = 0.0;
-	} else if (sin_x + 0.55 > rotated_uv.y) { // Transition from original color to black
-		float transition_factor = smoothstep(sin_x + 0.45, sin_x + 0.55, rotated_uv.y); // Smooth transition
+	} else if (sin_x + 0.55 > rotated_uv.y) {
+		float transition_factor = smoothstep(sin_x + 0.45, sin_x + 0.55, rotated_uv.y); 
         COLOR.a *= transition_factor;
 	}
 }

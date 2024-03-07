@@ -6,8 +6,6 @@
 position = Vector2(0, 277.997)
 script = ExtResource("1_7g3my")
 noise_strenght = 0.05
-noise_frequency = 16.0
-biome_frequency = 16
 vertex_count = 1024
 radius = 256.0
 grass_density = 0.1

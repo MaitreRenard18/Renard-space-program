@@ -2,14 +2,21 @@ extends Node2D
 
 # Settings
 @export_category("Noise Settings")
-@export var noise_strenght: float
-@export var noise_frequency: float
 @export var noise_seed: int
-@export var biome_frequency: int
+@export var number_of_layers: int
+@export var noise_strenght: float
+@export var roughness: float
+@export_range(0, 1) var persistence: float
 
 @export_category("Generation Settings")
 @export var vertex_count: int
 @export var radius: float
+
+@export_category("Atmosphere Settings")
+@export var planet_temperature: float
+@export var planet_humidity: float
+@export var temperature_variation: float
+@export var humidity_variation: float
 
 @export_category("Folliage Settings")
 @export_range(0, 1) var grass_density: float
@@ -55,23 +62,32 @@ var blank_texture = preload("res://assets/white_pixel.png")
 var atmosphere_shader: Resource = preload("res://shaders/atmosphere.gdshader")
 var planet_shadow_shader: Resource = preload("res://shaders/planet_shadow.gdshader")
 
-var circular_noise_0: CircularNoise
-var circular_noise_1: CircularNoise
-var temperature_noise: CircularNoise
+var noise: FastNoiseLite
+var temperature_noise: FastNoiseLite
+
 
 # Functions
 func get_terrain_height(theta: float) -> float:
-	var height: float = circular_noise_0.get_noise(theta) * noise_strenght * 4 + 1
-	height += circular_noise_1.get_noise(theta) * noise_strenght / 2
-	height *= radius
+	var x: float = cos(theta)
+	var y: float = -sin(theta)
 	
+	var height: float = 0
+	var frequency: float = roughness
+	var amplitude: float = 1
+
+	for i in range(number_of_layers):
+		height += noise.get_noise_2d(x * frequency, y * frequency) * amplitude
+		frequency *= roughness
+		amplitude *= persistence
+
+	height = height * noise_strenght + radius
 	return height
 
 
 func get_vertex_coordinates(theta: float) -> Vector2:
 	var height: float = get_terrain_height(theta)
 	
-	var x: float = cos(theta) * height
+	var x: float = cos(theta) * height 
 	var y: float = -sin(theta) * height
 	
 	return Vector2(x, y)
@@ -116,9 +132,12 @@ func place_background_sprite(texture: Texture, theta: float) -> void:
 
 
 func get_biome(theta: float) -> String:
-	var temperature: float = temperature_noise.get_noise(theta)
+	var x: float = cos(theta)
+	var y: float = -sin(theta)
 	
-	if temperature < 0.5:
+	var temperature: float = temperature_noise.get_noise_2d(x * temperature_variation, y * temperature_variation) + planet_temperature
+
+	if temperature < 0.0:
 		return "grass"
 	else:
 		return "desert"
@@ -133,11 +152,14 @@ func _ready():
 		noise_seed = randi_range(0, 2 ** 16)
 	
 	# Create noises
-	seed(noise_seed)
-	circular_noise_0 = CircularNoise.new(randi(), noise_frequency / 4)	
-	circular_noise_1 = CircularNoise.new(randi() , noise_frequency * 2)
-	temperature_noise = CircularNoise.new(randi(), biome_frequency)
-	
+	noise = FastNoiseLite.new()
+	noise.set_seed(noise_seed)
+	noise.set_noise_type(FastNoiseLite.TYPE_SIMPLEX)
+
+	temperature_noise = FastNoiseLite.new()
+	temperature_noise.set_seed(noise_seed + 1)
+	temperature_noise.set_noise_type(FastNoiseLite.TYPE_SIMPLEX)
+
 	# Generate planet geometry
 	var step: float = (2 * PI) / vertex_count
 
