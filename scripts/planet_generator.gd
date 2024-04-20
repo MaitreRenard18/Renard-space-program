@@ -98,12 +98,22 @@ func create_polygon2d(color: Color) -> Polygon2D:
 	
 	polygon.set_polygon([Vector2(0, 0)])
 	polygon.set_uv([Vector2(0.5, 0.5)])
-	polygon.material = ShaderMaterial.new()
-	polygon.material.shader = planet_shadow_shader
 
 	add_child(polygon)
 	return polygon
 
+func create_planet_shadow() -> MeshInstance2D:
+	var shadow = MeshInstance2D.new()
+	shadow.mesh = QuadMesh.new()
+	shadow.mesh.size = Vector2(radius, radius) * 2.5
+	
+	shadow.material = ShaderMaterial.new()
+	shadow.material.shader = planet_shadow_shader
+	shadow.z_index = 10
+	
+	add_child(shadow)
+	
+	return shadow
 
 func place_sprite(texture: Texture, theta: float) -> void:
 	var sprite = Sprite2D.new()
@@ -225,6 +235,9 @@ func _ready():
 	atmosphere.z_index = -2
 	
 	add_child(atmosphere)
+	
+	# Set up shadow
+	create_planet_shadow()
 	
 	# Move planet
 	position = Vector2(0, get_terrain_height(PI / 2))

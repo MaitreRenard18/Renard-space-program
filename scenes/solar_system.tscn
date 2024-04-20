@@ -1,12 +1,28 @@
-[gd_scene load_steps=6 format=3 uid="uid://qmqknqdd1lia"]
+[gd_scene load_steps=12 format=3 uid="uid://qmqknqdd1lia"]
 
 [ext_resource type="PackedScene" uid="uid://b8htqe1fqofi2" path="res://scenes/planet.tscn" id="1_ip36i"]
 [ext_resource type="Script" path="res://scripts/freecam.gd" id="2_rkyqd"]
 [ext_resource type="Script" path="res://scripts/pixel_filter.gd" id="3_cq6j0"]
 [ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://assets/rocket.png" id="4_j35av"]
+[ext_resource type="Shader" path="res://shaders/atmosphere.gdshader" id="5_k4dfg"]
+[ext_resource type="Shader" path="res://shaders/planet_shadow.gdshader" id="5_o3jh7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rqn47"]
 size = Vector2(12, 92)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j7ffm"]
+shader = ExtResource("5_k4dfg")
+shader_parameter/sky_color = Vector4(0.133, 0.592, 0.835, 1)
+shader_parameter/sunset_color = Vector4(1, 0.55, 0.3, 1)
+shader_parameter/sun_position = Vector2(0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_fpboe"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0gdb2"]
+shader = ExtResource("5_o3jh7")
+shader_parameter/sun_position = Vector2(0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ec4pc"]
 
 [node name="SolarSystem" type="Node2D"]
 
@@ -42,3 +58,23 @@ texture = ExtResource("4_j35av")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Rocket"]
 shape = SubResource("RectangleShape2D_rqn47")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+z_index = -1
+material = SubResource("ShaderMaterial_j7ffm")
+position = Vector2(304.25, -71.25)
+scale = Vector2(173.5, 173.5)
+mesh = SubResource("QuadMesh_fpboe")
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="."]
+material = SubResource("ShaderMaterial_0gdb2")
+position = Vector2(304.25, -71.25)
+scale = Vector2(173.5, 173.5)
+mesh = SubResource("QuadMesh_fpboe")
+
+[node name="MeshInstance2D3" type="MeshInstance2D" parent="."]
+z_index = -1
+position = Vector2(304.25, -71.25)
+rotation = 3.14159
+scale = Vector2(136.805, 136.805)
+mesh = SubResource("SphereMesh_ec4pc")

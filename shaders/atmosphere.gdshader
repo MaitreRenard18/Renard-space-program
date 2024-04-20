@@ -37,8 +37,10 @@ void fragment() {
 		float transition_factor = smoothstep(0.8, 0.5, rotated_uv.y);
 		COLOR.rgb = mix(sky_color.rgb, sunset_color.rgb, transition_factor);
 	}
-	float sin_x = -sin(rotated_uv.x * PI) / 8.0;
-
+	
+	// Hide half of the atmosphere
+	float sin_x = sin(rotated_uv.x * PI) / 8.0;
+	rotated_uv.y += 0.05;
 	if (sin_x + 0.45 > rotated_uv.y) {
 		COLOR.a = 0.0;
 	} else if (sin_x + 0.55 > rotated_uv.y) {
