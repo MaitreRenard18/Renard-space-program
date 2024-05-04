@@ -1,6 +1,6 @@
 shader_type canvas_item;
 
-uniform sampler2D noise_map;
+uniform sampler2D height_map;
 
 uniform vec2 camera_top_left_position;
 uniform vec2 camera_zoom;
@@ -42,14 +42,14 @@ vec4 get_biome_color(vec2 world_position) {
 		float projected_x = ((planet_radius * cos(angle)) / planet_radius + 1.0) / 2.0;
 		float projected_y = ((planet_radius * sin(angle)) / planet_radius + 1.0) / 2.0;
 
-		noise_value = texture(noise_map, vec2(projected_x, projected_y)).r;
+		noise_value = texture(height_map, vec2(projected_x, projected_y)).r;
 		if ((noise_value <= .45 && distance_from_center > planet_radius + .45 * noise_strenght) || (noise_value > .45 && distance_from_center > planet_radius + noise_value * noise_strenght)) {
             return vec4(0.0, 0.0, 0.0, 0.0);
         }
 
 	} else {
 		vec2 uv = vec2(map(relative_world_position.x, -planet_radius, planet_radius, 0, 1), map(relative_world_position.y, -planet_radius, planet_radius, 0, 1));
-        noise_value = texture(noise_map, uv).r;
+        noise_value = texture(height_map, uv).r;
     }
 	
 	if (noise_value > 0.5) {
