@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://qmqknqdd1lia"]
 
-[ext_resource type="PackedScene" uid="uid://b8htqe1fqofi2" path="res://nodes/earth.tscn" id="1_ip36i"]
+[ext_resource type="PackedScene" uid="uid://b8htqe1fqofi2" path="res://scenes/planet.tscn" id="1_ip36i"]
 [ext_resource type="Script" path="res://scripts/freecam.gd" id="3_3rihi"]
 [ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://assets/rocket.png" id="4_j35av"]
 
@@ -11,12 +11,18 @@ size = Vector2(12, 92)
 
 [node name="Earth" parent="." instance=ExtResource("1_ip36i")]
 z_index = -2
-position = Vector2(0, 3963.53)
-ocean_level = 4000.0
-noise_seed = -1
-vertex_count = 5000
+position = Vector2(0, 4186.44)
+noise_strenght = 150.0
+vertex_count = 25000
 radius = 4096.0
+grass_density = 0.3
+tree_density = 0.02
+noise_seed = 50
+number_of_layers = 3
+roughness = 32.0
+persistence = 0.1
 temperature_frequency = 16.0
+mass = null
 
 [node name="Rocket" type="RigidBody2D" parent="."]
 z_index = 10

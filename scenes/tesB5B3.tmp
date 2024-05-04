@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://gkb5qgarme40"]
+
+[ext_resource type="Script" path="res://scripts/water_body.gd" id="1_wo8lf"]
+[ext_resource type="Texture2D" uid="uid://bpslsp7vumst2" path="res://icon.svg" id="2_va6xo"]
+[ext_resource type="Script" path="res://scripts/freecam.gd" id="3_eaiik"]
+[ext_resource type="Script" path="res://scripts/earth_generation.gd" id="4_unc3t"]
+
+[node name="TestScene" type="Node2D"]
+
+[node name="WaterBody" type="Node2D" parent="."]
+position = Vector2(1743, 3599)
+script = ExtResource("1_wo8lf")
+body_lenght = 20654.0
+spring_number = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.145, 0.145)
+texture = ExtResource("2_va6xo")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+script = ExtResource("3_eaiik")
+
+[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
+ignore_rotation = false
+
+[node name="Earth" type="Node2D" parent="."]
+script = ExtResource("4_unc3t")

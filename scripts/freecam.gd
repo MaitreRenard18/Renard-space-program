@@ -3,6 +3,12 @@ extends CharacterBody2D
 @export var speed := 10
 @export var planet: Node2D;
 
+var camera: Camera2D
+
+func _ready():
+	camera = $CustomCamera2D
+
+
 func _process(_delta):
 	if planet:
 		var relative_position = position - planet.position
@@ -26,8 +32,8 @@ func _process(_delta):
 	position += direction.normalized().rotated(rotation) * speed
 
 	if Input.is_action_pressed("zoom_up"):
-		$Camera2D.zoom += Vector2(0.01, 0.01) 
+		camera.zoom += Vector2(0.01, 0.01)
 
 	if Input.is_action_pressed("zoom_down"):
-		if $Camera2D.zoom.x > 0.02 and $Camera2D.zoom.y > 0.02:
-			$Camera2D.zoom -= Vector2(0.01, 0.01)
+		if camera.zoom.x > 0.02 and camera.zoom.y > 0.02:
+			camera.zoom -= Vector2(0.01, 0.01)

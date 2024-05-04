@@ -1,0 +1,78 @@
+[gd_scene load_steps=12 format=3 uid="uid://gkb5qgarme40"]
+
+[ext_resource type="Shader" path="res://shaders/planet_renderer.gdshader" id="2_7tom8"]
+[ext_resource type="Script" path="res://scripts/custom_camera.gd" id="2_yo4xs"]
+[ext_resource type="Script" path="res://scripts/freecam.gd" id="3_eaiik"]
+[ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://assets/rocket.png" id="4_dakd4"]
+[ext_resource type="Shader" path="res://shaders/planet_shadow.gdshader" id="5_nfeaq"]
+[ext_resource type="Shader" path="res://shaders/atmosphere.gdshader" id="6_roe6r"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_t1ls2"]
+seed = 170
+frequency = 0.002
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_yatxe"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_t1ls2")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vinvc"]
+shader = ExtResource("2_7tom8")
+shader_parameter/camera_top_left_position = Vector2(-5822, -4514)
+shader_parameter/camera_zoom = Vector2(0.1, 0.1)
+shader_parameter/camera_rotation = 0.0
+shader_parameter/planet_position = Vector2(0, 0)
+shader_parameter/noise_strenght = 250.0
+shader_parameter/planet_radius = 2048.0
+shader_parameter/sea_level = null
+shader_parameter/noise_map = SubResource("NoiseTexture2D_yatxe")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u34um"]
+shader = ExtResource("5_nfeaq")
+shader_parameter/sun_position = Vector2(0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nydyw"]
+shader = ExtResource("6_roe6r")
+shader_parameter/sky_color = Vector4(0.133, 0.592, 0.835, 1)
+shader_parameter/sunset_color = Vector4(1, 0.55, 0.3, 1)
+shader_parameter/sun_position = Vector2(0, 1)
+
+[node name="TestScene" type="Node2D"]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+position = Vector2(98, -1634)
+script = ExtResource("3_eaiik")
+
+[node name="CustomCamera2D" type="Camera2D" parent="CharacterBody2D"]
+ignore_rotation = false
+zoom = Vector2(0.1, 0.1)
+script = ExtResource("2_yo4xs")
+
+[node name="ColorRect" type="ColorRect" parent="CharacterBody2D/CustomCamera2D"]
+material = SubResource("ShaderMaterial_vinvc")
+offset_left = -5920.0
+offset_top = -2880.0
+offset_right = -4736.0
+offset_bottom = -2304.0
+scale = Vector2(10, 10)
+
+[node name="Rocket" type="Sprite2D" parent="."]
+position = Vector2(2, -2244)
+texture = ExtResource("4_dakd4")
+
+[node name="Shadow" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_u34um")
+offset_left = 2750.0
+offset_top = 2750.0
+offset_right = 8250.0
+offset_bottom = 8250.0
+rotation = 3.14159
+
+[node name="Atmosphere" type="ColorRect" parent="."]
+z_index = -1
+material = SubResource("ShaderMaterial_nydyw")
+offset_left = 2750.0
+offset_top = 2750.0
+offset_right = 8250.0
+offset_bottom = 8250.0
+rotation = 3.14159
