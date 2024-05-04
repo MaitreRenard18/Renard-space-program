@@ -1,6 +1,5 @@
 shader_type canvas_item;
 
-uniform vec2 sun_position = vec2(0.0, 1.0);
 const vec3 space_color = vec3(0.004, 0.004, 0.027);
 
 uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear;
@@ -14,13 +13,8 @@ vec2 rotate(vec2 vector, float angle) {
  return rotated_vector + 0.52;
 }
 
-void vertex() {
-	// Called for every vertex the material is visible on.
-}
-
 void fragment() {
-	float angle = atan(sun_position.x, sun_position.y);
-	vec2 rotated_uv = rotate(UV, angle + PI);
+	vec2 rotated_uv = rotate(UV, 0);
 
 	float sin_x = sin(rotated_uv.x * PI) / 32.0 - .05;
 	
@@ -34,8 +28,3 @@ void fragment() {
 	COLOR.rgb = mix(COLOR.rgb, space_color, transition_factor - 0.01); // Blend towards black
 	
 }
-
-//void light() {
-	// Called for every pixel for every light affecting the material.
-	// Uncomment to replace the default light processing function with this one.
-//}

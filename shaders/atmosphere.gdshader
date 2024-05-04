@@ -2,12 +2,6 @@ shader_type canvas_item;
 
 uniform vec4 sky_color = vec4(0.133, 0.592, 0.835, 1.0);
 uniform vec4 sunset_color = vec4(1.0, 0.55, 0.30, 1.0);
-uniform vec2 sun_position = vec2(0.0, 1.0);
-varying vec2 world_position;
-
-void vertex() {
-	world_position = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
-}
 
 vec2 rotate(vec2 vector, float angle) {
  vec2 rotated_vector = vec2(0, 0);
@@ -27,8 +21,7 @@ void fragment() {
 	COLOR.a = smoothstep(0.0, 0.25, 1.0 - dist);
 	
 	// Change color depending on sun direction
-	float angle = atan(sun_position.x, sun_position.y);
-	vec2 rotated_uv = rotate(UV, angle);
+	vec2 rotated_uv = rotate(UV, PI);
 	
 	// Adjust colors based on sun direction
 	if (rotated_uv.y > 0.8) {

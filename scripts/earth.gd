@@ -1,5 +1,5 @@
 class_name Earth
-extends Node2D
+extends StaticBody2D
 
 @export_category("Generation Settings")
 @export var world_seed: int = -1
@@ -92,6 +92,7 @@ func _ready():
 	atmosphere.material = ShaderMaterial.new()
 	atmosphere.material.shader = atmosphere_shader
 	atmosphere.z_index = -1
+	atmosphere.rotation = 0
 	add_child(atmosphere)
 
 	# Set up shadow
@@ -101,4 +102,5 @@ func _ready():
 	shadow.material = ShaderMaterial.new()
 	shadow.material.shader = planet_shadow_shader
 	shadow.z_index = 1
+	shadow.rotation = 0
 	add_child(shadow)
