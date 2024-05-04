@@ -10,9 +10,10 @@ size = Vector2(12, 92)
 
 [node name="TestScene" type="Node2D"]
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("planet")]
 position = Vector2(0, -2294)
 script = ExtResource("3_eaiik")
+planet = NodePath("../Earth2")
 
 [node name="CustomCamera2D" type="Camera2D" parent="CharacterBody2D"]
 ignore_rotation = false

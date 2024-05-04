@@ -29,7 +29,7 @@ float map(float value, float sourceStart, float sourceEnd, float targetStart, fl
 }
 
 vec4 get_biome_color(vec2 world_position) {
-	world_position = vec2(floor(world_position.x), floor(world_position.y));
+	world_position = rotate(vec2(floor(world_position.x), floor(world_position.y)), camera_rotation);
 	vec2 relative_world_position = world_position - planet_position;
 	
 	float noise_value;
@@ -63,7 +63,7 @@ vec4 get_biome_color(vec2 world_position) {
 
 void fragment() {
     vec2 screen_size = 1.0 / SCREEN_PIXEL_SIZE; // Causes lags ?
-    vec2 world_position = rotate((camera_top_left_position) + UV * screen_size / camera_zoom, camera_rotation);
+    vec2 world_position = (camera_top_left_position) + UV * screen_size / camera_zoom;
 
     COLOR = get_biome_color(world_position);
 }

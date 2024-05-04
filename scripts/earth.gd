@@ -64,8 +64,6 @@ func _ready():
 	await height_map.changed
 	height_map_image = height_map.get_image()
 
-	print(height_map_image)
-
 	# Set up rendering
 	current_camera.add_body(self)
 
