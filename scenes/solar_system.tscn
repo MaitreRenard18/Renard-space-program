@@ -1,36 +1,40 @@
-[gd_scene load_steps=5 format=3 uid="uid://qmqknqdd1lia"]
+[gd_scene load_steps=6 format=3 uid="uid://gkb5qgarme40"]
 
-[ext_resource type="PackedScene" uid="uid://b8htqe1fqofi2" path="res://nodes/earth.tscn" id="1_ip36i"]
+[ext_resource type="Script" path="res://scripts/custom_camera.gd" id="2_wfv8u"]
 [ext_resource type="Script" path="res://scripts/freecam.gd" id="3_3rihi"]
 [ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://assets/rocket.png" id="4_j35av"]
+[ext_resource type="Script" path="res://scripts/earth.gd" id="4_od8s2"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rqn47"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cvsus"]
 size = Vector2(12, 92)
 
 [node name="SolarSystem" type="Node2D"]
 
-[node name="Earth" parent="." instance=ExtResource("1_ip36i")]
-z_index = -2
-position = Vector2(0, 3963.53)
-ocean_level = 4000.0
-noise_seed = -1
-vertex_count = 5000
-radius = 4096.0
-temperature_frequency = 16.0
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("planet")]
+position = Vector2(0, -2294)
+script = ExtResource("3_3rihi")
+planet = NodePath("../Earth2")
+
+[node name="CustomCamera2D" type="Camera2D" parent="CharacterBody2D"]
+ignore_rotation = false
+script = ExtResource("2_wfv8u")
 
 [node name="Rocket" type="RigidBody2D" parent="."]
-z_index = 10
-position = Vector2(0, -125)
+position = Vector2(0, -2294)
 
-[node name="Sprite" type="Sprite2D" parent="Rocket"]
+[node name="Rocket" type="Sprite2D" parent="Rocket"]
+z_index = 10
 texture = ExtResource("4_j35av")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Rocket"]
-shape = SubResource("RectangleShape2D_rqn47")
+shape = SubResource("RectangleShape2D_cvsus")
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("planet")]
-script = ExtResource("3_3rihi")
-planet = NodePath("../Earth")
-
-[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
-ignore_rotation = false
+[node name="Earth2" type="StaticBody2D" parent="."]
+script = ExtResource("4_od8s2")
+planet_radius = 2048.0
+collision_resolution = 2048
+texture_size = 1024
+frequency = 0.002
+noise_strenght = 250.0
+tree_density = 0.15
+grass_density = 0.5
