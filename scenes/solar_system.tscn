@@ -8,8 +8,6 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cvsus"]
 size = Vector2(12, 92)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_c4rq5"]
-
 [node name="SolarSystem" type="Node2D"]
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("planet")]
