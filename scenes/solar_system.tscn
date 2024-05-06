@@ -35,6 +35,6 @@ planet_radius = 2048.0
 collision_resolution = 2048
 texture_size = 1024
 frequency = 0.002
-noise_strenght = 250.0
+noise_strenght = 200.0
 tree_density = 0.15
 grass_density = 0.5
