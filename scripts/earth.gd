@@ -40,9 +40,9 @@ func get_noise_value(theta: float) -> float:
 
 func get_terrain_height(theta: float) -> float:
 	if get_biome(theta) == "water":
-		return planet_radius + noise_strenght * .45
+		return planet_radius
 
-	return get_noise_value(theta) * noise_strenght + planet_radius
+	return map(get_noise_value(theta), .45, 1, 0, 1) * noise_strenght + planet_radius
 
 
 func get_biome(theta: float) -> String:

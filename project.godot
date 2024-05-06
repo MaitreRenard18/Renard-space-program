@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Star_Citizen"
-config/features=PackedStringArray("4.2", "C#", "Forward Plus")
+config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [dotnet]
