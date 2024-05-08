@@ -128,7 +128,7 @@ func _ready():
 	for i in range(collision_resolution):
 		var theta = i * 2 * PI / collision_resolution
 
-		var height = get_terrain_height(theta)
+		var height = get_terrain_height(theta) - .1
 		var x = cos(theta) * height
 		var y = sin(theta) * height
 		
