@@ -19,14 +19,14 @@ var height_map_image: Image
 @export var biomes: BiomeCollection
 @export var sea_level: float
 
-
 # Shaders
-var atmosphere_shader: Shader = preload("res://shaders/atmosphere.gdshader")
-var planet_shadow_shader: Shader = preload("res://shaders/planet_shadow.gdshader")
-
+const ATMOSPHERE_SHADER: Shader = preload("res://shaders/atmosphere.gdshader")
+const PLANET_SHADOW_SHADER: Shader = preload("res://shaders/planet_shadow.gdshader")
+const PLANET_RENDEER_SHADER: Shader = preload("res://shaders/planet_renderer.gdshader")
 
 # Variables
-@onready var current_camera: CustomCamera2D = get_viewport().get_camera_2d()
+@onready var current_camera: Camera2D = get_viewport().get_camera_2d()
+var planet_renderer: ColorRect
 
 
 # Utils
@@ -43,21 +43,15 @@ func get_noise_value(theta: float) -> float:
 
 
 func get_terrain_height(theta: float) -> float:
-	if get_biome(theta) == "water":
+	if get_noise_value(theta) < sea_level:
 		return planet_radius
 
 	return map(get_noise_value(theta), .45, 1, 0, 1) * noise_strenght + planet_radius
 
 
-func get_biome(theta: float) -> String:
+func get_biome(theta: float) -> Biome:
 	var noise_value: float = get_noise_value(theta)
-
-	if noise_value > 0.5:
-		return "grass"
-	elif noise_value > 0.45:
-		return "sand"
-	else:
-		return "water"
+	return biomes.get_biome(noise_value)
 
 
 func get_terrain_angle(theta: float) -> float:
@@ -85,9 +79,6 @@ func _ready():
 	await height_map.changed
 	height_map_image = height_map.get_image()
 
-	# Set up rendering
-	current_camera.add_body(self)
-
 	# Generate colision
 	# TODO: Remove collision with water
 	collision_resolution = max(collision_resolution, 3)
@@ -111,7 +102,7 @@ func _ready():
 	atmosphere.size = Vector2(2.75 * planet_radius, 2.75 * planet_radius)
 	atmosphere.position = -atmosphere.size / 2
 	atmosphere.material = ShaderMaterial.new()
-	atmosphere.material.shader = atmosphere_shader
+	atmosphere.material.shader = ATMOSPHERE_SHADER
 	atmosphere.z_index = -2
 	atmosphere.rotation = 0
 	add_child(atmosphere)
@@ -121,7 +112,33 @@ func _ready():
 	shadow.size = Vector2(2.75 * planet_radius, 2.75 * planet_radius)
 	shadow.position = -shadow.size / 2
 	shadow.material = ShaderMaterial.new()
-	shadow.material.shader = planet_shadow_shader
+	shadow.material.shader = PLANET_SHADOW_SHADER
 	shadow.z_index = 1
 	shadow.rotation = 0
 	add_child(shadow)
+
+	# Set up renderer
+	planet_renderer = ColorRect.new()
+	planet_renderer.material = ShaderMaterial.new()
+	planet_renderer.material.shader = PLANET_RENDEER_SHADER
+
+	planet_renderer.material.set_shader_parameter("height_map", height_map)
+	planet_renderer.material.set_shader_parameter("planet_position", position)
+	planet_renderer.material.set_shader_parameter("planet_radius", planet_radius)
+	planet_renderer.material.set_shader_parameter("noise_strenght", noise_strenght)
+	planet_renderer.material.set_shader_parameter("biome_ramp", biomes.get_color_gradient(64))
+	planet_renderer.material.set_shader_parameter("sea_level", sea_level)
+
+	current_camera.add_child(planet_renderer)
+
+
+func _process(_delta: float) -> void:
+	current_camera = get_viewport().get_camera_2d()
+
+	planet_renderer.scale = Vector2(1 / current_camera.zoom.x, 1 / current_camera.zoom.y)
+	planet_renderer.size = get_viewport_rect().size
+	planet_renderer.get_material().set_shader_parameter("camera_zoom", current_camera.zoom)
+	
+	planet_renderer.position = -planet_renderer.size * planet_renderer.scale / 2.0
+	planet_renderer.get_material().set_shader_parameter("camera_top_left_position", planet_renderer.global_position.rotated(-current_camera.global_rotation))
+	planet_renderer.get_material().set_shader_parameter("camera_rotation", current_camera.global_rotation)

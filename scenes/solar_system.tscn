@@ -1,6 +1,5 @@
-[gd_scene load_steps=11 format=3 uid="uid://gkb5qgarme40"]
+[gd_scene load_steps=10 format=3 uid="uid://gkb5qgarme40"]
 
-[ext_resource type="Script" path="res://scripts/custom_camera.gd" id="2_wfv8u"]
 [ext_resource type="Script" path="res://scripts/freecam.gd" id="3_3rihi"]
 [ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://assets/rocket.png" id="4_j35av"]
 [ext_resource type="Script" path="res://scripts/earth.gd" id="4_od8s2"]
@@ -32,11 +31,10 @@ biomes = Array[ExtResource("6_00c1f")]([SubResource("Resource_12a42"), SubResour
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("planet")]
 position = Vector2(0, -2294)
 script = ExtResource("3_3rihi")
-planet = NodePath("../Earth2")
+planet = NodePath("../Earth")
 
-[node name="CustomCamera2D" type="Camera2D" parent="CharacterBody2D"]
+[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
 ignore_rotation = false
-script = ExtResource("2_wfv8u")
 
 [node name="Rocket" type="RigidBody2D" parent="."]
 position = Vector2(0, -2294)
@@ -48,7 +46,7 @@ texture = ExtResource("4_j35av")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rocket"]
 polygon = PackedVector2Array(6, -37, 5, -40, 4, -42, 3, -44, 2, -45, 1, -46, -1, -46, -2, -45, -3, -44, -4, -42, -5, -40, -6, -37, -6, 30, -5, 31, -3, 32, -3, 35, -4, 38, -5, 42, -5, 46, 5, 46, 5, 42, 4, 38, 3, 35, 3, 32, 5, 31, 6, 30)
 
-[node name="Earth2" type="StaticBody2D" parent="."]
+[node name="Earth" type="StaticBody2D" parent="."]
 script = ExtResource("4_od8s2")
 planet_radius = 2048.0
 collision_resolution = 2048
@@ -56,3 +54,4 @@ texture_size = 1024
 frequency = 0.002
 noise_strenght = 200.0
 biomes = SubResource("Resource_lno3k")
+sea_level = 0.45

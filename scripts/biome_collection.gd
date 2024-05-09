@@ -56,7 +56,7 @@ func get_biome(offset: float) -> Biome:
 	return biomes[-1]
 
 
-func get_color_gradient(width: int = 16) -> GradientTexture1D:
+func get_color_gradient(width: int = 512) -> GradientTexture1D:
 	var gradient: Gradient = Gradient.new()
 	gradient.interpolation_mode = Gradient.GRADIENT_INTERPOLATE_CONSTANT
 	

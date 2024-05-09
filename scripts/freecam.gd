@@ -3,10 +3,7 @@ extends CharacterBody2D
 @export var speed := 10
 @export var planet: Node2D;
 
-var camera: Camera2D
-
-func _ready():
-	camera = $CustomCamera2D
+@onready var camera: Camera2D = $Camera2D
 
 
 func _process(_delta):
