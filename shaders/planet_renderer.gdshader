@@ -1,6 +1,7 @@
 shader_type canvas_item;
 
 uniform sampler2D height_map;
+uniform sampler2D biome_ramp: filter_nearest;
 
 uniform vec2 camera_top_left_position;
 uniform vec2 camera_zoom;
@@ -53,13 +54,7 @@ vec4 get_biome_color(vec2 world_position) {
         noise_value = texture(height_map, uv).r;
     }
 	
-	if (noise_value > 0.5) {
-        return vec4(120.0 / 255.0, 175.0 / 255.0, 82.0 / 255.0, 1.0);
-    } else if (noise_value > 0.45) {
-        return vec4(255.0 / 255.0, 220.0 / 255.0, 142.0 / 255.0, 1.0);
-    } else {
-        return vec4(0.0, 134.0 / 255.0, 244.0 / 255.0, 1.0);
-    }
+	return texture(biome_ramp, vec2(noise_value, 0));
 }
 
 void fragment() {

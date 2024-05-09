@@ -1,9 +1,31 @@
-[gd_scene load_steps=5 format=3 uid="uid://gkb5qgarme40"]
+[gd_scene load_steps=11 format=3 uid="uid://gkb5qgarme40"]
 
 [ext_resource type="Script" path="res://scripts/custom_camera.gd" id="2_wfv8u"]
 [ext_resource type="Script" path="res://scripts/freecam.gd" id="3_3rihi"]
 [ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://assets/rocket.png" id="4_j35av"]
 [ext_resource type="Script" path="res://scripts/earth.gd" id="4_od8s2"]
+[ext_resource type="Script" path="res://scripts/biome.gd" id="6_00c1f"]
+[ext_resource type="Script" path="res://scripts/biome_collection.gd" id="7_or78c"]
+
+[sub_resource type="Resource" id="Resource_12a42"]
+script = ExtResource("6_00c1f")
+biome_name = "ocean"
+biome_color = Color(0, 0.52549, 0.956863, 1)
+
+[sub_resource type="Resource" id="Resource_h67cj"]
+script = ExtResource("6_00c1f")
+biome_name = "beach"
+biome_color = Color(1, 0.862745, 0.556863, 1)
+
+[sub_resource type="Resource" id="Resource_toj1o"]
+script = ExtResource("6_00c1f")
+biome_name = "plains"
+biome_color = Color(0.470588, 0.686275, 0.321569, 1)
+
+[sub_resource type="Resource" id="Resource_lno3k"]
+script = ExtResource("7_or78c")
+offsets = PackedFloat32Array(0, 0.45, 0.5)
+biomes = Array[ExtResource("6_00c1f")]([SubResource("Resource_12a42"), SubResource("Resource_h67cj"), SubResource("Resource_toj1o")])
 
 [node name="SolarSystem" type="Node2D"]
 
@@ -33,5 +55,4 @@ collision_resolution = 2048
 texture_size = 1024
 frequency = 0.002
 noise_strenght = 200.0
-tree_density = 0.15
-grass_density = 0.5
+biomes = SubResource("Resource_lno3k")

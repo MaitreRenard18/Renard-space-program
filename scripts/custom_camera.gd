@@ -31,6 +31,7 @@ func add_body(body: Earth):
 	display.material.set_shader_parameter("planet_position", body.position)
 	display.material.set_shader_parameter("planet_radius", body.planet_radius)
 	display.material.set_shader_parameter("noise_strenght", body.noise_strenght)
-	
+	display.material.set_shader_parameter("biome_ramp", body.biomes.get_color_gradient(16))
+	display.material.set_shader_parameter("sea_level", body.sea_level)
 	displays.append(display)
 	add_child(display)

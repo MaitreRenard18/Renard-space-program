@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Star_Citizen"
 run/main_scene="res://scenes/solar_system.tscn"
-config/features=PackedStringArray("4.2", "Forward Plus")
+config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [dotnet]
