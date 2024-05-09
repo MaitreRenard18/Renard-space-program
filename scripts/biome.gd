@@ -6,6 +6,10 @@ class_name Biome
 @export var biome_composition: BiomeComposition
 
 
+func _init():
+	biome_composition = BiomeComposition.new()
+
+
 func get_biome_name() -> String:
 	return biome_name
 

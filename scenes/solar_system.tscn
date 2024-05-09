@@ -1,37 +1,37 @@
-[gd_scene load_steps=10 format=3 uid="uid://gkb5qgarme40"]
+[gd_scene load_steps=11 format=3 uid="uid://gkb5qgarme40"]
 
 [ext_resource type="Script" path="res://scripts/freecam.gd" id="3_3rihi"]
 [ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://assets/rocket.png" id="4_j35av"]
-[ext_resource type="Script" path="res://scripts/earth.gd" id="4_od8s2"]
+[ext_resource type="Script" path="res://scripts/planet.gd" id="4_od8s2"]
+[ext_resource type="Resource" uid="uid://byo7d36x7w0rt" path="res://presets/earth_presset.tres" id="4_sxxsq"]
 [ext_resource type="Script" path="res://scripts/biome.gd" id="6_00c1f"]
 [ext_resource type="Script" path="res://scripts/biome_collection.gd" id="7_or78c"]
 
-[sub_resource type="Resource" id="Resource_12a42"]
+[sub_resource type="Resource" id="Resource_p0q01"]
 script = ExtResource("6_00c1f")
-biome_name = "ocean"
-biome_color = Color(0, 0.52549, 0.956863, 1)
+biome_name = "moon"
+biome_color = Color(0.772549, 0.866667, 0.835294, 1)
 
-[sub_resource type="Resource" id="Resource_h67cj"]
+[sub_resource type="Resource" id="Resource_w07hw"]
 script = ExtResource("6_00c1f")
-biome_name = "beach"
-biome_color = Color(1, 0.862745, 0.556863, 1)
+biome_name = ""
+biome_color = Color(0.658824, 0.792157, 0.792157, 1)
 
-[sub_resource type="Resource" id="Resource_toj1o"]
+[sub_resource type="Resource" id="Resource_p3lt8"]
 script = ExtResource("6_00c1f")
-biome_name = "plains"
-biome_color = Color(0.470588, 0.686275, 0.321569, 1)
+biome_name = ""
+biome_color = Color(0.505882, 0.643137, 0.682353, 1)
 
-[sub_resource type="Resource" id="Resource_lno3k"]
+[sub_resource type="Resource" id="Resource_0q4au"]
 script = ExtResource("7_or78c")
-offsets = PackedFloat32Array(0, 0.45, 0.5)
-biomes = Array[ExtResource("6_00c1f")]([SubResource("Resource_12a42"), SubResource("Resource_h67cj"), SubResource("Resource_toj1o")])
+offsets = PackedFloat32Array(0, 0.4, 0.6)
+biomes = Array[ExtResource("6_00c1f")]([SubResource("Resource_p0q01"), SubResource("Resource_w07hw"), SubResource("Resource_p3lt8")])
 
 [node name="SolarSystem" type="Node2D"]
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("planet")]
-position = Vector2(0, -2294)
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+position = Vector2(0, -2048)
 script = ExtResource("3_3rihi")
-planet = NodePath("../Earth")
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
 ignore_rotation = false
@@ -48,10 +48,23 @@ polygon = PackedVector2Array(6, -37, 5, -40, 4, -42, 3, -44, 2, -45, 1, -46, -1,
 
 [node name="Earth" type="StaticBody2D" parent="."]
 script = ExtResource("4_od8s2")
+world_seed = 926
 planet_radius = 2048.0
 collision_resolution = 2048
 texture_size = 1024
 frequency = 0.002
 noise_strenght = 200.0
-biomes = SubResource("Resource_lno3k")
+biomes = ExtResource("4_sxxsq")
 sea_level = 0.45
+has_atmosphere = true
+
+[node name="Moon" type="StaticBody2D" parent="."]
+position = Vector2(4099, -4185)
+rotation = -0.0331879
+script = ExtResource("4_od8s2")
+planet_radius = 1024.0
+collision_resolution = 512
+texture_size = 512
+frequency = 0.008
+noise_strenght = 100.0
+biomes = SubResource("Resource_0q4au")

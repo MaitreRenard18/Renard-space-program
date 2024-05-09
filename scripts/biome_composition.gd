@@ -19,3 +19,16 @@ func set_probabilities(new_probabilities: PackedFloat32Array) -> void:
 
 func set_elements(new_elements: Array[Resource]) -> void:
 	elements = new_elements
+
+
+func set_seed(world_seed: int) -> void:
+	seed(world_seed)
+
+
+func get_random_elements() -> Array[Resource]:
+	var random_elements: Array[Resource] = []
+	for i in range(probabilities.size()):
+		if randf() < probabilities[i]:
+			random_elements.append(elements[i])
+
+	return random_elements

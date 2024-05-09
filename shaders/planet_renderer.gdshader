@@ -42,7 +42,7 @@ vec4 get_biome_color(vec2 world_position) {
 		float projected_x = ((planet_radius * cos(angle)) / planet_radius + 1.0) / 2.0;
 		float projected_y = ((planet_radius * sin(angle)) / planet_radius + 1.0) / 2.0;
 
-		noise_value = max(texture(height_map, vec2(projected_x, projected_y)).r, sea_level);
+		noise_value = texture(height_map, vec2(projected_x, projected_y)).r;
 		if (distance_from_center > planet_radius + map(noise_value, sea_level, 1, 0, 1) * noise_strenght){
             return vec4(0.0, 0.0, 0.0, 0.0);
         }

@@ -73,5 +73,13 @@ func get_color_gradient(width: int = 512) -> GradientTexture1D:
 	return texture
 
 
+func get_biome_by_name(name: String) -> Biome:
+	for biome in biomes:
+		if biome.name == name:
+			return biome
+	
+	return null
+
+
 func changed() -> void:
 	_sort()

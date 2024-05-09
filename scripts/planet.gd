@@ -1,4 +1,4 @@
-class_name Earth
+class_name Planet
 extends StaticBody2D
 
 
@@ -18,6 +18,8 @@ var height_map_image: Image
 @export_category("Environnement Settings")
 @export var biomes: BiomeCollection
 @export var sea_level: float
+@export var has_atmosphere: bool
+
 
 # Shaders
 const ATMOSPHERE_SHADER: Shader = preload("res://shaders/atmosphere.gdshader")
@@ -61,6 +63,15 @@ func get_terrain_angle(theta: float) -> float:
 	return (pos1 - pos0).angle()
 
 
+func place_sprite(texture: Texture, theta: float) -> void:
+	var sprite: Sprite2D = Sprite2D.new()
+	sprite.texture = texture
+	sprite.position = Vector2(cos(theta), sin(theta)) * (get_terrain_height(theta) - .1)
+	sprite.rotation = get_terrain_angle(theta)
+	sprite.z_index = -1
+	add_child(sprite)
+
+
 func _ready():
 	# Change the seed if it is not set
 	if world_seed == -1:
@@ -94,18 +105,24 @@ func _ready():
 		
 		collision_points.append(Vector2(x, y))
 
+		var biome = get_biome(theta)
+		var elements = biome.get_biome_composition().get_random_elements()
+		for element in elements:
+			place_sprite(element, theta)
+
 	collision_shape.set_polygon(collision_points)
 	add_child(collision_shape)
 
 	# Set up atmosphere
-	var atmosphere: ColorRect = ColorRect.new()
-	atmosphere.size = Vector2(2.75 * planet_radius, 2.75 * planet_radius)
-	atmosphere.position = -atmosphere.size / 2
-	atmosphere.material = ShaderMaterial.new()
-	atmosphere.material.shader = ATMOSPHERE_SHADER
-	atmosphere.z_index = -2
-	atmosphere.rotation = 0
-	add_child(atmosphere)
+	if has_atmosphere:
+		var atmosphere: ColorRect = ColorRect.new()
+		atmosphere.size = Vector2(2.75 * planet_radius, 2.75 * planet_radius)
+		atmosphere.position = -atmosphere.size / 2
+		atmosphere.material = ShaderMaterial.new()
+		atmosphere.material.shader = ATMOSPHERE_SHADER
+		atmosphere.z_index = -2
+		atmosphere.rotation = 0
+		add_child(atmosphere)
 
 	# Set up shadow
 	var shadow: ColorRect = ColorRect.new()
