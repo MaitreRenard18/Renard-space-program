@@ -13,7 +13,6 @@ config_version=5
 config/name="Star_Citizen"
 run/main_scene="res://scenes/solar_system.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
-boot_splash/bg_color=Color(0.0745098, 0.0823529, 0.176471, 1)
 config/icon="res://icon.svg"
 
 [dotnet]
@@ -60,5 +59,5 @@ zoom_down={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-environment/defaults/default_clear_color=Color(0.00592896, 0.00682602, 0.0239865, 1)
+environment/defaults/default_clear_color=Color(0.00392157, 0.00392157, 0.027451, 1)
 2d/snap/snap_2d_transforms_to_pixel=true
