@@ -66,7 +66,7 @@ func get_terrain_angle(theta: float) -> float:
 func place_sprite(texture: Texture, theta: float) -> void:
 	var sprite: Sprite2D = Sprite2D.new()
 	sprite.texture = texture
-	sprite.position = Vector2(cos(theta), sin(theta)) * (get_terrain_height(theta) - .1)
+	sprite.position = Vector2(cos(theta), sin(theta)) * get_terrain_height(theta)
 	sprite.rotation = get_terrain_angle(theta)
 	sprite.z_index = -1
 	add_child(sprite)
@@ -99,9 +99,9 @@ func _ready():
 	for i in range(collision_resolution):
 		var theta = i * 2 * PI / collision_resolution
 
-		var height = get_terrain_height(theta) - .1
-		var x = cos(theta) * height
-		var y = sin(theta) * height
+		var height = get_terrain_height(theta)
+		var x: int = int(cos(theta) * height)
+		var y: int = int(sin(theta) * height)
 		
 		collision_points.append(Vector2(x, y))
 
@@ -111,6 +111,7 @@ func _ready():
 			place_sprite(element, theta)
 
 	collision_shape.set_polygon(collision_points)
+	collision_shape.z_index = 10
 	add_child(collision_shape)
 
 	# Set up atmosphere
@@ -136,6 +137,7 @@ func _ready():
 
 	# Set up renderer
 	planet_renderer = ColorRect.new()
+	planet_renderer.set_anchors_preset(Control.PRESET_FULL_RECT)
 	planet_renderer.material = ShaderMaterial.new()
 	planet_renderer.material.shader = PLANET_RENDEER_SHADER
 
@@ -146,16 +148,13 @@ func _ready():
 	planet_renderer.material.set_shader_parameter("biome_ramp", biomes.get_color_gradient(64))
 	planet_renderer.material.set_shader_parameter("sea_level", sea_level)
 
-	current_camera.add_child(planet_renderer)
+	current_camera.get_node("PlanetRendering").add_child(planet_renderer)
 
 
 func _process(_delta: float) -> void:
 	current_camera = get_viewport().get_camera_2d()
+	var camera_position: Vector2 = current_camera.global_position.rotated(-current_camera.global_rotation) - get_viewport().get_visible_rect().size / 2 / current_camera.zoom
 
-	planet_renderer.scale = Vector2(1 / current_camera.zoom.x, 1 / current_camera.zoom.y)
-	planet_renderer.size = get_viewport_rect().size
 	planet_renderer.get_material().set_shader_parameter("camera_zoom", current_camera.zoom)
-	
-	planet_renderer.position = -planet_renderer.size * planet_renderer.scale / 2.0
-	planet_renderer.get_material().set_shader_parameter("camera_top_left_position", planet_renderer.global_position.rotated(-current_camera.global_rotation))
+	planet_renderer.get_material().set_shader_parameter("camera_top_left_position", camera_position)
 	planet_renderer.get_material().set_shader_parameter("camera_rotation", current_camera.global_rotation)

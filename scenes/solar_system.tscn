@@ -47,7 +47,6 @@ has_atmosphere = true
 
 [node name="Moon" type="StaticBody2D" parent="."]
 position = Vector2(4099, -4185)
-rotation = -0.0331879
 script = ExtResource("4_od8s2")
 planet_radius = 1024.0
 collision_resolution = 512
@@ -55,14 +54,17 @@ texture_size = 512
 frequency = 0.008
 noise_strenght = 100.0
 biomes = SubResource("Resource_0q4au")
+sea_level = 0.5
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("planet")]
 position = Vector2(0, -2200)
 script = ExtResource("5_hdkdl")
+planet = NodePath("../Earth")
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
 ignore_rotation = false
-zoom = Vector2(2, 2)
+
+[node name="PlanetRendering" type="CanvasLayer" parent="CharacterBody2D/Camera2D"]
 
 [node name="RigidBody2D" type="RigidBody2D" parent="."]
 position = Vector2(0, -2201)
