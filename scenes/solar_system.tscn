@@ -1,9 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://gkb5qgarme40"]
+[gd_scene load_steps=13 format=3 uid="uid://gkb5qgarme40"]
 
 [ext_resource type="Script" path="res://scripts/planet.gd" id="4_od8s2"]
 [ext_resource type="Resource" uid="uid://byo7d36x7w0rt" path="res://presets/earth_presset.tres" id="4_sxxsq"]
 [ext_resource type="Script" path="res://scripts/freecam.gd" id="5_hdkdl"]
 [ext_resource type="Script" path="res://scripts/biome.gd" id="6_00c1f"]
+[ext_resource type="Texture2D" uid="uid://ds25ryiodqbin" path="res://assets/fauna/cow.png" id="6_6rhbk"]
+[ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://assets/rocket.png" id="7_mlehb"]
 [ext_resource type="Script" path="res://scripts/biome_collection.gd" id="7_or78c"]
 
 [sub_resource type="Resource" id="Resource_p0q01"]
@@ -25,6 +27,9 @@ biome_color = Color(0.505882, 0.643137, 0.682353, 1)
 script = ExtResource("7_or78c")
 offsets = PackedFloat32Array(0, 0.4, 0.6)
 biomes = Array[ExtResource("6_00c1f")]([SubResource("Resource_p0q01"), SubResource("Resource_w07hw"), SubResource("Resource_p3lt8")])
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ap4a8"]
+size = Vector2(14, 10)
 
 [node name="SolarSystem" type="Node2D"]
 
@@ -52,7 +57,27 @@ noise_strenght = 100.0
 biomes = SubResource("Resource_0q4au")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+position = Vector2(0, -2200)
 script = ExtResource("5_hdkdl")
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
 ignore_rotation = false
+zoom = Vector2(2, 2)
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2(0, -2201)
+
+[node name="Cow" type="Sprite2D" parent="RigidBody2D"]
+texture = ExtResource("6_6rhbk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource("RectangleShape2D_ap4a8")
+
+[node name="RigidBody2D2" type="RigidBody2D" parent="."]
+position = Vector2(-18, -2242)
+
+[node name="Rocket" type="Sprite2D" parent="RigidBody2D2"]
+texture = ExtResource("7_mlehb")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RigidBody2D2"]
+polygon = PackedVector2Array(-6, -37, -5, -40, -4, -42, -3, -44, -2, -45, -1, -46, 1, -46, 2, -45, 3, -44, 4, -42, 5, -40, 6, -37, 6, 30, 5, 31, 3, 32, 3, 35, 4, 38, 5, 42, 5, 46, -5, 46, -5, 42, -4, 38, -3, 35, -3, 32, -5, 31, -6, 30)
