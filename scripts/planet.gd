@@ -149,12 +149,3 @@ func _ready():
 	planet_renderer.material.set_shader_parameter("sea_level", sea_level)
 
 	current_camera.get_node("PlanetRendering").add_child(planet_renderer)
-
-
-func _process(_delta: float) -> void:
-	current_camera = get_viewport().get_camera_2d()
-	var camera_position: Vector2 = current_camera.global_position.rotated(-current_camera.global_rotation) - get_viewport().get_visible_rect().size / 2 / current_camera.zoom
-
-	planet_renderer.get_material().set_shader_parameter("camera_zoom", current_camera.zoom)
-	planet_renderer.get_material().set_shader_parameter("camera_top_left_position", camera_position)
-	planet_renderer.get_material().set_shader_parameter("camera_rotation", current_camera.global_rotation)

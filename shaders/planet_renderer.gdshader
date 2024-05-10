@@ -1,17 +1,22 @@
 shader_type canvas_item;
 
+
+// Camera properties
+global uniform vec2 camera_top_left_position;
+global uniform vec2 camera_zoom;
+global uniform float camera_rotation;
+
+// Planet properties
 uniform sampler2D height_map;
 uniform sampler2D biome_ramp: filter_nearest;
-
-uniform vec2 camera_top_left_position;
-uniform vec2 camera_zoom;
-uniform float camera_rotation;
 
 uniform vec2 planet_position;
 uniform float noise_strenght;
 uniform float planet_radius = 500;
 uniform float sea_level;
 
+
+// Utils
 vec2 rotate(vec2 vector, float angle) {
  vec2 rotated_vector = vec2(0, 0);
  vec2 translated_vector = vector - 0.5;
@@ -28,6 +33,8 @@ float map(float value, float sourceStart, float sourceEnd, float targetStart, fl
 	return targetValue;
 }
 
+
+// Main functions
 vec4 get_biome_color(vec2 world_position) {
 	world_position = rotate(vec2(floor(world_position.x), floor(world_position.y)), camera_rotation);
 	vec2 relative_world_position = world_position - planet_position;
@@ -39,11 +46,11 @@ vec4 get_biome_color(vec2 world_position) {
 	
 	if (distance_from_center > planet_radius) {
 		float angle = atan(relative_world_position.y, relative_world_position.x);
-		float projected_x = ((planet_radius * cos(angle)) / planet_radius + 1.0) / 2.0;
-		float projected_y = ((planet_radius * sin(angle)) / planet_radius + 1.0) / 2.0;
+		float projected_x = map(cos(angle), -1.0, 1.0, 0.0, 1.0);
+		float projected_y = map(sin(angle), -1.0, 1.0, 0.0, 1.0);
 
 		noise_value = texture(height_map, vec2(projected_x, projected_y)).r;
-		if (distance_from_center > planet_radius + map(noise_value, sea_level, 1, 0, 1) * noise_strenght){
+		if (distance_from_center > planet_radius + map(noise_value, sea_level, 1.0, 0.0, 1.0) * noise_strenght){
             return vec4(0.0, 0.0, 0.0, 0.0);
         }
 
@@ -54,6 +61,7 @@ vec4 get_biome_color(vec2 world_position) {
 	
 	return texture(biome_ramp, vec2(noise_value, 0));
 }
+
 
 void fragment() {
     vec2 screen_size = 1.0 / SCREEN_PIXEL_SIZE; // Causes lags ?

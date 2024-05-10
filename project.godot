@@ -15,6 +15,10 @@ run/main_scene="res://scenes/solar_system.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+ShadersHandler="res://scripts/shaders_handler.gd"
+
 [dotnet]
 
 project/assembly_name="Star_Citizen"
@@ -61,3 +65,22 @@ zoom_down={
 textures/canvas_textures/default_texture_filter=0
 environment/defaults/default_clear_color=Color(0.00392157, 0.00392157, 0.027451, 1)
 2d/snap/snap_2d_transforms_to_pixel=true
+
+[shader_globals]
+
+screen_size={
+"type": "vec2",
+"value": Vector2(0, 0)
+}
+camera_top_left_position={
+"type": "vec2",
+"value": Vector2(0, 0)
+}
+camera_zoom={
+"type": "vec2",
+"value": Vector2(0, 0)
+}
+camera_rotation={
+"type": "float",
+"value": 0.0
+}

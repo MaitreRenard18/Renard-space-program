@@ -54,7 +54,6 @@ texture_size = 512
 frequency = 0.008
 noise_strenght = 100.0
 biomes = SubResource("Resource_0q4au")
-sea_level = 0.5
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("planet")]
 position = Vector2(0, -2200)
