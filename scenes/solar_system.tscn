@@ -46,7 +46,7 @@ sea_level = 0.45
 has_atmosphere = true
 
 [node name="Moon" type="StaticBody2D" parent="."]
-position = Vector2(4099, -4185)
+position = Vector2(4500, -4500)
 script = ExtResource("4_od8s2")
 planet_radius = 1024.0
 collision_resolution = 512

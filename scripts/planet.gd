@@ -23,8 +23,7 @@ var height_map_image: Image
 
 # Shaders
 const ATMOSPHERE_SHADER: Shader = preload("res://shaders/atmosphere.gdshader")
-const PLANET_SHADOW_SHADER: Shader = preload("res://shaders/planet_shadow.gdshader")
-const PLANET_RENDEER_SHADER: Shader = preload("res://shaders/planet_renderer.gdshader")
+const PLANET_RENDERER_SHADER: Shader = preload("res://shaders/planet_renderer.gdshader")
 
 # Variables
 @onready var current_camera: Camera2D = get_viewport().get_camera_2d()
@@ -66,7 +65,7 @@ func get_terrain_angle(theta: float) -> float:
 func place_sprite(texture: Texture, theta: float) -> void:
 	var sprite: Sprite2D = Sprite2D.new()
 	sprite.texture = texture
-	sprite.position = Vector2(cos(theta), sin(theta)) * get_terrain_height(theta)
+	sprite.position = Vector2(cos(theta), sin(theta)) * (get_terrain_height(theta))
 	sprite.rotation = get_terrain_angle(theta)
 	sprite.z_index = -1
 	add_child(sprite)
@@ -125,21 +124,11 @@ func _ready():
 		atmosphere.rotation = 0
 		add_child(atmosphere)
 
-	# Set up shadow
-	var shadow: ColorRect = ColorRect.new()
-	shadow.size = Vector2(2.75 * planet_radius, 2.75 * planet_radius)
-	shadow.position = -shadow.size / 2
-	shadow.material = ShaderMaterial.new()
-	shadow.material.shader = PLANET_SHADOW_SHADER
-	shadow.z_index = 1
-	shadow.rotation = 0
-	add_child(shadow)
-
 	# Set up renderer
 	planet_renderer = ColorRect.new()
 	planet_renderer.set_anchors_preset(Control.PRESET_FULL_RECT)
 	planet_renderer.material = ShaderMaterial.new()
-	planet_renderer.material.shader = PLANET_RENDEER_SHADER
+	planet_renderer.material.shader = PLANET_RENDERER_SHADER
 
 	planet_renderer.material.set_shader_parameter("height_map", height_map)
 	planet_renderer.material.set_shader_parameter("planet_position", position)
