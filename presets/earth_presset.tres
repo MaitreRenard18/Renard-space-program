@@ -1,16 +1,12 @@
-[gd_resource type="Resource" script_class="BiomeCollection" load_steps=17 format=3 uid="uid://byo7d36x7w0rt"]
+[gd_resource type="Resource" script_class="BiomeCollection" load_steps=13 format=3 uid="uid://byo7d36x7w0rt"]
 
-[ext_resource type="Script" path="res://scripts/biome.gd" id="1_m1p3q"]
-[ext_resource type="Texture2D" uid="uid://dmk11373ply7e" path="res://assets/environnement/palmtree.png" id="2_asis0"]
-[ext_resource type="Texture2D" uid="uid://bu3nhs6apptct" path="res://assets/environnement/rock_01.png" id="3_2gda7"]
-[ext_resource type="Script" path="res://scripts/biome_composition.gd" id="4_y1cy8"]
-[ext_resource type="Texture2D" uid="uid://410ygqj8ka2c" path="res://assets/environnement/dark_grass_01.png" id="5_ednqc"]
-[ext_resource type="Texture2D" uid="uid://b7h63gnydpnsg" path="res://assets/environnement/dark_grass_02.png" id="6_dfoc2"]
-[ext_resource type="Texture2D" uid="uid://c83d1gv8ov466" path="res://assets/environnement/grass_01.png" id="7_2fsea"]
-[ext_resource type="Texture2D" uid="uid://c8lbfafcny3xa" path="res://assets/environnement/grass_02.png" id="8_sn2xh"]
-[ext_resource type="Texture2D" uid="uid://dsgcxol23o104" path="res://assets/environnement/flower_01.png" id="9_rvv3a"]
-[ext_resource type="Texture2D" uid="uid://njhhbteeemv4" path="res://assets/environnement/tree.png" id="10_lt5uo"]
-[ext_resource type="Script" path="res://scripts/biome_collection.gd" id="11_e21cw"]
+[ext_resource type="Script" path="res://scripts/generation/biome.gd" id="1_m1p3q"]
+[ext_resource type="Texture2D" uid="uid://bu3nhs6apptct" path="res://assets/misc/rock_01.png" id="3_putm1"]
+[ext_resource type="Script" path="res://scripts/generation/biome_composition.gd" id="4_dff37"]
+[ext_resource type="PackedScene" uid="uid://bl8acyjjmecuc" path="res://scenes/flora/palmtree.tscn" id="4_un6a3"]
+[ext_resource type="PackedScene" uid="uid://j3lcukoyndjk" path="res://assets/flora/grass/grass.tscn" id="6_jr7an"]
+[ext_resource type="PackedScene" uid="uid://tkx64q4oq3p3" path="res://scenes/flora/tree.tscn" id="10_dvlyf"]
+[ext_resource type="Script" path="res://scripts/generation/biome_collection.gd" id="11_e21cw"]
 
 [sub_resource type="Resource" id="Resource_12a42"]
 script = ExtResource("1_m1p3q")
@@ -18,9 +14,9 @@ biome_name = "ocean"
 biome_color = Color(0, 0.52549, 0.956863, 1)
 
 [sub_resource type="Resource" id="Resource_1egh1"]
-script = ExtResource("4_y1cy8")
+script = ExtResource("4_dff37")
 probabilities = PackedFloat32Array(0.2, 0.2)
-elements = Array[Resource]([ExtResource("2_asis0"), ExtResource("3_2gda7")])
+elements = Array[Resource]([ExtResource("3_putm1"), ExtResource("4_un6a3")])
 
 [sub_resource type="Resource" id="Resource_h67cj"]
 script = ExtResource("1_m1p3q")
@@ -29,9 +25,9 @@ biome_color = Color(1, 0.862745, 0.556863, 1)
 biome_composition = SubResource("Resource_1egh1")
 
 [sub_resource type="Resource" id="Resource_6yvf7"]
-script = ExtResource("4_y1cy8")
-probabilities = PackedFloat32Array(0.5, 0.5, 0.5, 0.5, 0.5, 0.2, 0.2)
-elements = Array[Resource]([ExtResource("5_ednqc"), ExtResource("6_dfoc2"), ExtResource("7_2fsea"), ExtResource("8_sn2xh"), ExtResource("9_rvv3a"), ExtResource("3_2gda7"), ExtResource("10_lt5uo")])
+script = ExtResource("4_dff37")
+probabilities = PackedFloat32Array(0.2, 0.2, 0.5)
+elements = Array[Resource]([ExtResource("3_putm1"), ExtResource("10_dvlyf"), ExtResource("6_jr7an")])
 
 [sub_resource type="Resource" id="Resource_toj1o"]
 script = ExtResource("1_m1p3q")

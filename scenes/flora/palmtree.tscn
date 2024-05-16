@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://bl8acyjjmecuc"]
+
+[ext_resource type="Script" path="res://scripts/landscape/landscape_element.gd" id="1_s2orm"]
+[ext_resource type="Texture2D" uid="uid://belnfh2h2860e" path="res://assets/flora/trees/palmtree_trunk.png" id="1_tf5ck"]
+[ext_resource type="Texture2D" uid="uid://c2d4ek8kfld7e" path="res://assets/flora/trees/palmtree_leaves.png" id="2_1roi8"]
+[ext_resource type="Material" uid="uid://bpiaottnr4mhp" path="res://materials/leaves_wind.tres" id="2_1361t"]
+
+[node name="Tree" type="Node2D"]
+script = ExtResource("1_s2orm")
+
+[node name="Trunk" type="Sprite2D" parent="."]
+texture = ExtResource("1_tf5ck")
+region_enabled = true
+region_rect = Rect2(0, 0, 10, 62)
+
+[node name="Leaves" type="Sprite2D" parent="Trunk"]
+material = ExtResource("2_1361t")
+position = Vector2(2, -29)
+texture = ExtResource("2_1roi8")
