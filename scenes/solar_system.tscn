@@ -56,31 +56,32 @@ noise_strenght = 100.0
 biomes = SubResource("Resource_0q4au")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("planet")]
-position = Vector2(0, -2200)
+position = Vector2(0, -2242)
 script = ExtResource("5_hdkdl")
 planet = NodePath("../Earth")
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
 ignore_rotation = false
+zoom = Vector2(0.1, 0.1)
 
 [node name="PlanetRendering" type="CanvasLayer" parent="CharacterBody2D/Camera2D"]
 
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
-position = Vector2(0, -2201)
+[node name="Cow" type="RigidBody2D" parent="."]
+position = Vector2(16, -2201)
 
-[node name="Cow" type="Sprite2D" parent="RigidBody2D"]
+[node name="Cow" type="Sprite2D" parent="Cow"]
 texture = ExtResource("6_6rhbk")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cow"]
 shape = SubResource("RectangleShape2D_ap4a8")
 
-[node name="RigidBody2D2" type="RigidBody2D" parent="."]
-position = Vector2(-18, -2242)
+[node name="Rocket" type="RigidBody2D" parent="."]
+position = Vector2(0, -2242)
 
-[node name="Rocket" type="Sprite2D" parent="RigidBody2D2"]
+[node name="Rocket" type="Sprite2D" parent="Rocket"]
 texture = ExtResource("7_mlehb")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RigidBody2D2"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rocket"]
 polygon = PackedVector2Array(-6, -37, -5, -40, -4, -42, -3, -44, -2, -45, -1, -46, 1, -46, 2, -45, 3, -44, 4, -42, 5, -40, 6, -37, 6, 30, 5, 31, 3, 32, 3, 35, 4, 38, 5, 42, 5, 46, -5, 46, -5, 42, -4, 38, -3, 35, -3, 32, -5, 31, -6, 30)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

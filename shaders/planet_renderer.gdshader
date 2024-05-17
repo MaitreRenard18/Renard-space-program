@@ -1,7 +1,5 @@
 shader_type canvas_item;
 
-// 
-global uniform vec3 space_color;
 
 // Camera properties
 global uniform vec2 screen_size;
@@ -17,6 +15,7 @@ uniform vec2 planet_position;
 uniform float noise_strenght;
 uniform float planet_radius;
 uniform float sea_level;
+
 
 // Utils
 vec2 rotate(vec2 vector, float angle) {
@@ -80,17 +79,4 @@ void fragment() {
 	
 	// Render planet
 	COLOR = get_biome_color(world_position);
-	
-	// Render shadow
-	vec2 relative_position = world_position - planet_position;
-	
-	if (relative_position.y > -256.0 && relative_position.x > -planet_radius * 1.5 && relative_position.x < planet_radius * 1.5) {
-		float transition_factor = map(smoothstep(-256.0, 256.0, relative_position.y), 0.0, 1.0, 0.0, 0.99);
-		if (COLOR.a > 0.0) {
-			COLOR.rgb = mix(COLOR.rgb, space_color, transition_factor);
-		} else {
-			COLOR.rgb = space_color;
-			COLOR.a = transition_factor;
-		}
-	}
 }

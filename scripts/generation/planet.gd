@@ -24,10 +24,13 @@ var height_map_image: Image
 # Shaders
 const ATMOSPHERE_SHADER: Shader = preload("res://shaders/atmosphere.gdshader")
 const PLANET_RENDERER_SHADER: Shader = preload("res://shaders/planet_renderer.gdshader")
+const SHADOW_SHADER: Shader = preload("res://shaders/planet_shadow_renderer.gdshader")
+
 
 # Variables
 @onready var current_camera: Camera2D = get_viewport().get_camera_2d()
 var planet_renderer: ColorRect
+var shadow_renderer: ColorRect
 var moons: Array[Planet]
 
 
@@ -151,6 +154,18 @@ func _ready():
 
 	current_camera.get_node("PlanetRendering").add_child(planet_renderer)
 	
+	# Set up shadow renderer
+	shadow_renderer = ColorRect.new()
+	shadow_renderer.set_anchors_preset(Control.PRESET_FULL_RECT)
+	shadow_renderer.material = ShaderMaterial.new()
+	shadow_renderer.material.shader = SHADOW_SHADER
+	shadow_renderer.z_index = 10
+	
+	shadow_renderer.material.set_shader_parameter("planet_radius", planet_radius)
+	shadow_renderer.material.set_shader_parameter("planet_position", global_position)
+	
+	current_camera.get_node("PlanetRendering").add_child(shadow_renderer)
+	
 	# Get moons
 	for node in get_children():
 		if node is Planet:
@@ -159,6 +174,7 @@ func _ready():
 
 func _process(delta):
 	planet_renderer.material.set_shader_parameter("planet_position", position)
+	shadow_renderer.material.set_shader_parameter("planet_position", position)
 
 
 var rotation_speed: float = .5
