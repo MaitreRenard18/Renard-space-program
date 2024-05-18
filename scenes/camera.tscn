@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://vbxw2sgh4x0h"]
+[gd_scene load_steps=3 format=3 uid="uid://vbxw2sgh4x0h"]
+
+[ext_resource type="Texture2D" uid="uid://ndbjgqiuei0j" path="res://assets/background.png" id="1_ylh4d"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_24cqr"]
 
@@ -26,3 +28,15 @@ render_target_update_mode = 4
 
 [node name="ViewportModulate" type="CanvasModulate" parent="ShadowRendering/ShadowViewportContainer"]
 color = Color(1, 1, 1, 0.886275)
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -128
+
+[node name="TextureRect" type="TextureRect" parent="Background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_ylh4d")
+stretch_mode = 1

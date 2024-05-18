@@ -10,7 +10,7 @@ global uniform float camera_rotation;
 global uniform vec3 space_color;
 uniform float shadow_width_factor = 1.75;
 uniform float shadow_radius_factor = .2;
-uniform float shadow_y_offset_factor = 0.5;
+uniform float shadow_y_offset_factor = 0.4;
 uniform float shadow_softness = .2;
 
 // Planet properties

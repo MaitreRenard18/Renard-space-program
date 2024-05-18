@@ -3,9 +3,9 @@
 [ext_resource type="Script" path="res://scripts/generation/biome.gd" id="1_m1p3q"]
 [ext_resource type="Texture2D" uid="uid://bu3nhs6apptct" path="res://assets/misc/rock_01.png" id="3_putm1"]
 [ext_resource type="Script" path="res://scripts/generation/biome_composition.gd" id="4_dff37"]
-[ext_resource type="PackedScene" uid="uid://bl8acyjjmecuc" path="res://scenes/flora/palmtree.tscn" id="4_un6a3"]
+[ext_resource type="PackedScene" uid="uid://bl8acyjjmecuc" path="res://scenes/environements/palmtree.tscn" id="4_un6a3"]
 [ext_resource type="PackedScene" uid="uid://j3lcukoyndjk" path="res://assets/flora/grass/grass.tscn" id="6_jr7an"]
-[ext_resource type="PackedScene" uid="uid://tkx64q4oq3p3" path="res://scenes/flora/tree.tscn" id="10_dvlyf"]
+[ext_resource type="PackedScene" uid="uid://tkx64q4oq3p3" path="res://scenes/environements/tree.tscn" id="10_dvlyf"]
 [ext_resource type="Script" path="res://scripts/generation/biome_collection.gd" id="11_e21cw"]
 
 [sub_resource type="Resource" id="Resource_12a42"]

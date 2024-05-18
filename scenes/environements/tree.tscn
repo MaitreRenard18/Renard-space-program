@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://tkx64q4oq3p3"]
 
-[ext_resource type="Script" path="res://scripts/landscape/landscape_element.gd" id="1_n7xmm"]
+[ext_resource type="Script" path="res://scripts/environements/landscape_element.gd" id="1_n7xmm"]
 [ext_resource type="Texture2D" uid="uid://baxwjopisygwl" path="res://assets/flora/trees/tree_trunk.png" id="1_ydkru"]
 [ext_resource type="Texture2D" uid="uid://cyir26cjbcu86" path="res://assets/flora/trees/tree_leaves.png" id="2_q51j4"]
 [ext_resource type="Material" uid="uid://bpiaottnr4mhp" path="res://materials/leaves_wind.tres" id="2_tfe3g"]
