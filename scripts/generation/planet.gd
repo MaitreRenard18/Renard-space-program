@@ -164,7 +164,7 @@ func _ready():
 	shadow_renderer.material.set_shader_parameter("planet_radius", planet_radius)
 	shadow_renderer.material.set_shader_parameter("planet_position", global_position)
 	
-	current_camera.get_node("PlanetRendering").add_child(shadow_renderer)
+	current_camera.get_node("ShadowRendering/ShadowViewportContainer/ShadowViewport").add_child(shadow_renderer)
 	
 	# Get moons
 	for node in get_children():

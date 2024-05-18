@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://vbxw2sgh4x0h"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_24cqr"]
+
+[node name="Camera2D" type="Camera2D"]
+ignore_rotation = false
+
+[node name="PlanetRendering" type="CanvasLayer" parent="."]
+
+[node name="ShadowRendering" type="CanvasLayer" parent="."]
+
+[node name="ShadowViewportContainer" type="SubViewportContainer" parent="ShadowRendering"]
+material = SubResource("ShaderMaterial_24cqr")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="ShadowViewport" type="SubViewport" parent="ShadowRendering/ShadowViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="ViewportModulate" type="CanvasModulate" parent="ShadowRendering/ShadowViewportContainer"]
+color = Color(1, 1, 1, 0.886275)

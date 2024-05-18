@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://b4y6f8xla0xk1"]
+[gd_scene load_steps=14 format=3 uid="uid://b4y6f8xla0xk1"]
 
 [ext_resource type="Script" path="res://scripts/generation/planet.gd" id="4_od8s2"]
 [ext_resource type="Resource" uid="uid://byo7d36x7w0rt" path="res://presets/earth_presset.tres" id="4_sxxsq"]
 [ext_resource type="Script" path="res://scripts/freecam.gd" id="5_hdkdl"]
 [ext_resource type="Script" path="res://scripts/generation/biome.gd" id="6_00c1f"]
 [ext_resource type="Texture2D" uid="uid://ds25ryiodqbin" path="res://assets/fauna/cow.png" id="6_6rhbk"]
+[ext_resource type="PackedScene" uid="uid://vbxw2sgh4x0h" path="res://scenes/camera.tscn" id="6_stoxb"]
 [ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://assets/rocket.png" id="7_mlehb"]
 [ext_resource type="Script" path="res://scripts/generation/biome_collection.gd" id="7_or78c"]
 
@@ -60,11 +61,7 @@ position = Vector2(0, -2242)
 script = ExtResource("5_hdkdl")
 planet = NodePath("../Earth")
 
-[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
-ignore_rotation = false
-zoom = Vector2(0.1, 0.1)
-
-[node name="PlanetRendering" type="CanvasLayer" parent="CharacterBody2D/Camera2D"]
+[node name="Camera2D" parent="CharacterBody2D" instance=ExtResource("6_stoxb")]
 
 [node name="Cow" type="RigidBody2D" parent="."]
 position = Vector2(16, -2201)

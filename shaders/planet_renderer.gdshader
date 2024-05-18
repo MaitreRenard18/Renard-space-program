@@ -19,12 +19,11 @@ uniform float sea_level;
 
 // Utils
 vec2 rotate(vec2 vector, float angle) {
- vec2 rotated_vector = vec2(0, 0);
- vec2 translated_vector = vector - 0.5;
- rotated_vector.x = cos(angle) * translated_vector.x - sin(angle) * translated_vector.y;
- rotated_vector.y = sin(angle) * translated_vector.x + cos(angle) * translated_vector.y;
+    vec2 rotated_vector;
+    rotated_vector.x = cos(angle) * vector.x - sin(angle) * vector.y;
+    rotated_vector.y = sin(angle) * vector.x + cos(angle) * vector.y;
 
- return rotated_vector + 0.52;
+    return rotated_vector;
 }
 
 
