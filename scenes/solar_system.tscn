@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b4y6f8xla0xk1"]
+[gd_scene load_steps=20 format=3 uid="uid://b4y6f8xla0xk1"]
 
 [ext_resource type="Script" path="res://scripts/generation/planet.gd" id="4_od8s2"]
 [ext_resource type="Resource" uid="uid://byo7d36x7w0rt" path="res://presets/earth_presset.tres" id="4_sxxsq"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://vbxw2sgh4x0h" path="res://scenes/camera.tscn" id="6_stoxb"]
 [ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://assets/rocket.png" id="7_mlehb"]
 [ext_resource type="Script" path="res://scripts/generation/biome_collection.gd" id="7_or78c"]
+[ext_resource type="Shader" path="res://shaders/sun.gdshader" id="9_f3u2x"]
 
 [sub_resource type="Resource" id="Resource_p0q01"]
 script = ExtResource("6_00c1f")
@@ -31,6 +32,25 @@ biomes = Array[ExtResource("6_00c1f")]([SubResource("Resource_p0q01"), SubResour
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ap4a8"]
 size = Vector2(14, 10)
+
+[sub_resource type="Gradient" id="Gradient_hem4x"]
+colors = PackedColorArray(1, 0.364706, 0, 1, 1, 0.52549, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3vhin"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_35w1d"]
+seamless = true
+color_ramp = SubResource("Gradient_hem4x")
+noise = SubResource("FastNoiseLite_3vhin")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0vjt2"]
+shader = ExtResource("9_f3u2x")
+shader_parameter/glow_intensity = 0.5
+shader_parameter/animation_speed = 0.05
+shader_parameter/sun_texture = SubResource("NoiseTexture2D_35w1d")
+
+[sub_resource type="Gradient" id="Gradient_nkexj"]
+colors = PackedColorArray(1, 0.364706, 0, 1, 1, 0.52549, 0, 0)
 
 [node name="SolarSystem" type="Node2D"]
 
@@ -81,4 +101,33 @@ texture = ExtResource("7_mlehb")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rocket"]
 polygon = PackedVector2Array(-6, -37, -5, -40, -4, -42, -3, -44, -2, -45, -1, -46, 1, -46, 2, -45, 3, -44, 4, -42, 5, -40, 6, -37, 6, 30, 5, 31, 3, 32, 3, 35, 4, 38, 5, 42, 5, 46, -5, 46, -5, 42, -4, 38, -3, 35, -3, 32, -5, 31, -6, 30)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sun" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_0vjt2")
+offset_left = -32768.0
+offset_top = -84224.0
+offset_right = 32768.0
+offset_bottom = -18688.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Sun"]
+z_index = -1
+position = Vector2(32769, 32769)
+scale = Vector2(10, 10)
+amount = 512
+lifetime = 10.0
+preprocess = 10.0
+randomness = 1.0
+lifetime_randomness = 0.5
+emission_shape = 1
+emission_sphere_radius = 128.0
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 512.0
+initial_velocity_max = 512.0
+orbit_velocity_min = -0.3
+orbit_velocity_max = 0.3
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_min = 256.0
+scale_amount_max = 256.0
+color_ramp = SubResource("Gradient_nkexj")

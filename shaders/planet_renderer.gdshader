@@ -15,6 +15,7 @@ uniform vec2 planet_position;
 uniform float noise_strenght;
 uniform float planet_radius;
 uniform float sea_level;
+uniform float planet_rotation;
 
 
 // Utils
@@ -74,7 +75,7 @@ vec4 get_biome_color(vec2 world_position) {
 
 void fragment() {
     vec2 world_position = camera_top_left_position + UV * screen_size / camera_zoom;
-	world_position = rotate(vec2(floor(world_position.x), floor(world_position.y)), camera_rotation);
+	world_position = rotate(vec2(floor(world_position.x), floor(world_position.y)), camera_rotation - planet_rotation);
 	
 	// Render planet
 	COLOR = get_biome_color(world_position);

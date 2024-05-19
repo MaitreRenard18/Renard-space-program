@@ -20,6 +20,11 @@ var height_map_image: Image
 @export var sea_level: float
 @export var has_atmosphere: bool
 
+@export_category("Physics Settings")
+@export var mass: float
+@export var revolution_speed: float = .5
+@export var rotation_speed: float = .01
+
 
 # Shaders
 const ATMOSPHERE_SHADER: Shader = preload("res://shaders/atmosphere.gdshader")
@@ -173,11 +178,12 @@ func _ready():
 
 
 func _process(delta):
-	planet_renderer.material.set_shader_parameter("planet_position", position)
-	shadow_renderer.material.set_shader_parameter("planet_position", position)
+	planet_renderer.material.set_shader_parameter("planet_position", global_position)
+	planet_renderer.material.set_shader_parameter("planet_rotation", global_rotation)
+	
+	shadow_renderer.material.set_shader_parameter("planet_position", global_position)
 
 
-var rotation_speed: float = .5
 func _physics_process(delta):
 	for node in moons:
-		node.global_position = node.global_position.rotated(deg_to_rad(rotation_speed))
+		node.global_position = node.global_position.rotated(deg_to_rad(revolution_speed))
