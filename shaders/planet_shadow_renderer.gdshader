@@ -8,6 +8,8 @@ global uniform float camera_rotation;
 
 // Shadow settings
 global uniform vec3 space_color;
+global uniform vec2 sun_position;
+
 uniform float shadow_width_factor = 1.75;
 uniform float shadow_radius_factor = .2;
 uniform float shadow_y_offset_factor = 0.4;
@@ -36,9 +38,11 @@ float map(float value, float sourceStart, float sourceEnd, float targetStart, fl
 
 
 void fragment() {
+	float sun_angle = atan(sun_position.y - planet_position.y, sun_position.x - planet_position.x) + PI / 2.0;
+	
 	vec2 world_position = camera_top_left_position + UV * screen_size / camera_zoom;
 	world_position = rotate(vec2(floor(world_position.x), floor(world_position.y)), camera_rotation);
-	vec2 relative_position = world_position - planet_position;
+	vec2 relative_position = rotate(world_position - planet_position, -sun_angle);
 	
 	float distance_from_center = distance(planet_position, world_position);
 	

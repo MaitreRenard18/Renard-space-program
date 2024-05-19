@@ -1,5 +1,5 @@
 class_name Planet
-extends StaticBody2D
+extends CelestialBody
 
 
 @export_category("Generation Settings")
@@ -20,11 +20,6 @@ var height_map_image: Image
 @export var sea_level: float
 @export var has_atmosphere: bool
 
-@export_category("Physics Settings")
-@export var mass: float
-@export var revolution_speed: float = .5
-@export var rotation_speed: float = .01
-
 
 # Shaders
 const ATMOSPHERE_SHADER: Shader = preload("res://shaders/atmosphere.gdshader")
@@ -36,8 +31,7 @@ const SHADOW_SHADER: Shader = preload("res://shaders/planet_shadow_renderer.gdsh
 @onready var current_camera: Camera2D = get_viewport().get_camera_2d()
 var planet_renderer: ColorRect
 var shadow_renderer: ColorRect
-var moons: Array[Planet]
-
+var atmosphere: ColorRect
 
 # Utils
 func map(value: float, in_min: float, in_max: float, out_min: float, out_max: float) -> float:
@@ -89,6 +83,8 @@ func place_scene(scene: PackedScene, theta: float) -> void:
 
 
 func _ready():
+	super()
+	
 	# Change the seed if it is not set
 	if world_seed == -1:
 		world_seed = randi()
@@ -135,7 +131,7 @@ func _ready():
 
 	# Set up atmosphere
 	if has_atmosphere:
-		var atmosphere: ColorRect = ColorRect.new()
+		atmosphere = ColorRect.new()
 		atmosphere.size = Vector2(2.75 * planet_radius, 2.75 * planet_radius)
 		atmosphere.position = -atmosphere.size / 2
 		atmosphere.material = ShaderMaterial.new()
@@ -170,20 +166,12 @@ func _ready():
 	shadow_renderer.material.set_shader_parameter("planet_position", global_position)
 	
 	current_camera.get_node("ShadowRendering/ShadowViewportContainer/ShadowViewport").add_child(shadow_renderer)
-	
-	# Get moons
-	for node in get_children():
-		if node is Planet:
-			moons.append(node)
-
 
 func _process(delta):
 	planet_renderer.material.set_shader_parameter("planet_position", global_position)
 	planet_renderer.material.set_shader_parameter("planet_rotation", global_rotation)
 	
 	shadow_renderer.material.set_shader_parameter("planet_position", global_position)
-
-
-func _physics_process(delta):
-	for node in moons:
-		node.global_position = node.global_position.rotated(deg_to_rad(revolution_speed))
+	
+	if has_atmosphere:
+		atmosphere.material.set_shader_parameter("planet_position", global_position)

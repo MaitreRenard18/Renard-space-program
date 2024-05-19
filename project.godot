@@ -88,3 +88,7 @@ space_color={
 "type": "vec3",
 "value": Vector3(0.004, 0.004, 0.027)
 }
+sun_position={
+"type": "vec2",
+"value": Vector2(0, 0)
+}

@@ -26,7 +26,7 @@ func _process(_delta):
 	elif Input.is_action_pressed("left"):
 		direction.x = -1
 
-	position += direction.normalized().rotated(rotation) * speed
+	position += direction.normalized().rotated(rotation) * speed / camera.zoom
 
 	if Input.is_action_pressed("zoom_up"):
 		camera.zoom += Vector2(0.01, 0.01)
