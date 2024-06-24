@@ -19,7 +19,6 @@ uniform float shadow_softness = .2;
 uniform float planet_radius;
 uniform vec2 planet_position;
 
-
 // Utils
 vec2 rotate(vec2 vector, float angle) {
     vec2 rotated_vector;
