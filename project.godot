@@ -15,6 +15,15 @@ run/main_scene="res://scenes/solar_system.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+ShadersHandler="res://scripts/shaders_handler.gd"
+BodyHandler="*res://scripts/body_handler.gd"
+
+[display]
+
+window/size/initial_position_type=3
+
 [dotnet]
 
 project/assembly_name="Star_Citizen"
@@ -56,8 +65,39 @@ zoom_down={
 ]
 }
 
+[physics]
+
+3d/default_gravity_vector=Vector3(0, 0, 0)
+2d/default_gravity_vector=Vector2(0, 0)
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
 environment/defaults/default_clear_color=Color(0.00392157, 0.00392157, 0.027451, 1)
-2d/snap/snap_2d_transforms_to_pixel=true
+
+[shader_globals]
+
+screen_size={
+"type": "vec2",
+"value": Vector2(0, 0)
+}
+camera_zoom={
+"type": "vec2",
+"value": Vector2(0, 0)
+}
+camera_rotation={
+"type": "float",
+"value": 0.0
+}
+space_color={
+"type": "vec3",
+"value": Vector3(0.004, 0.004, 0.027)
+}
+sun_position={
+"type": "vec2",
+"value": Vector2(0, 0)
+}
+camera_top_left_position={
+"type": "vec2",
+"value": Vector2(0, 0)
+}

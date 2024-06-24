@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="BiomeCollection" load_steps=13 format=3 uid="uid://byo7d36x7w0rt"]
+
+[ext_resource type="Script" path="res://scripts/generation/biome.gd" id="1_m1p3q"]
+[ext_resource type="Texture2D" uid="uid://bu3nhs6apptct" path="res://assets/misc/rock_01.png" id="3_putm1"]
+[ext_resource type="Script" path="res://scripts/generation/biome_composition.gd" id="4_dff37"]
+[ext_resource type="PackedScene" uid="uid://bl8acyjjmecuc" path="res://scenes/environements/palmtree.tscn" id="4_un6a3"]
+[ext_resource type="PackedScene" uid="uid://j3lcukoyndjk" path="res://assets/flora/grass/grass.tscn" id="6_jr7an"]
+[ext_resource type="PackedScene" uid="uid://tkx64q4oq3p3" path="res://scenes/environements/tree.tscn" id="10_dvlyf"]
+[ext_resource type="Script" path="res://scripts/generation/biome_collection.gd" id="11_e21cw"]
+
+[sub_resource type="Resource" id="Resource_12a42"]
+script = ExtResource("1_m1p3q")
+biome_name = "ocean"
+biome_color = Color(0, 0.52549, 0.956863, 1)
+
+[sub_resource type="Resource" id="Resource_1egh1"]
+script = ExtResource("4_dff37")
+probabilities = PackedFloat32Array(0.2, 0.2)
+elements = Array[Resource]([ExtResource("3_putm1"), ExtResource("4_un6a3")])
+
+[sub_resource type="Resource" id="Resource_h67cj"]
+script = ExtResource("1_m1p3q")
+biome_name = "beach"
+biome_color = Color(1, 0.862745, 0.556863, 1)
+biome_composition = SubResource("Resource_1egh1")
+
+[sub_resource type="Resource" id="Resource_6yvf7"]
+script = ExtResource("4_dff37")
+probabilities = PackedFloat32Array(0.2, 0.2, 0.5)
+elements = Array[Resource]([ExtResource("3_putm1"), ExtResource("10_dvlyf"), ExtResource("6_jr7an")])
+
+[sub_resource type="Resource" id="Resource_toj1o"]
+script = ExtResource("1_m1p3q")
+biome_name = "plains"
+biome_color = Color(0.470588, 0.686275, 0.321569, 1)
+biome_composition = SubResource("Resource_6yvf7")
+
+[resource]
+script = ExtResource("11_e21cw")
+offsets = PackedFloat32Array(0, 0.45, 0.5)
+biomes = Array[ExtResource("1_m1p3q")]([SubResource("Resource_12a42"), SubResource("Resource_h67cj"), SubResource("Resource_toj1o")])

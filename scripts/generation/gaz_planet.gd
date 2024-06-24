@@ -1,0 +1,3 @@
+extends CelestialBody
+
+# TODO

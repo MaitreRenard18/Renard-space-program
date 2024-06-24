@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="BiomeCollection" load_steps=6 format=3 uid="uid://l3f6n7lhl00y"]
+
+[ext_resource type="Script" path="res://scripts/generation/biome.gd" id="1_uhmib"]
+[ext_resource type="Script" path="res://scripts/generation/biome_collection.gd" id="2_puq01"]
+
+[sub_resource type="Resource" id="Resource_p0q01"]
+script = ExtResource("1_uhmib")
+biome_name = "moon"
+biome_color = Color(0.772549, 0.866667, 0.835294, 1)
+
+[sub_resource type="Resource" id="Resource_w07hw"]
+script = ExtResource("1_uhmib")
+biome_name = ""
+biome_color = Color(0.658824, 0.792157, 0.792157, 1)
+
+[sub_resource type="Resource" id="Resource_p3lt8"]
+script = ExtResource("1_uhmib")
+biome_name = ""
+biome_color = Color(0.505882, 0.643137, 0.682353, 1)
+
+[resource]
+script = ExtResource("2_puq01")
+offsets = PackedFloat32Array(0, 0.4, 0.6)
+biomes = Array[ExtResource("1_uhmib")]([SubResource("Resource_p0q01"), SubResource("Resource_w07hw"), SubResource("Resource_p3lt8")])

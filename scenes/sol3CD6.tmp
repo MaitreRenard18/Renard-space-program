@@ -17,7 +17,6 @@ size = Vector2(14, 10)
 
 [node name="Cow" type="RigidBody2D" parent="."]
 position = Vector2(16, 38751)
-script = ExtResource("2_wbyer")
 
 [node name="Cow" type="Sprite2D" parent="Cow"]
 texture = ExtResource("6_6rhbk")
@@ -41,12 +40,12 @@ planet_radius = 2048.0
 collision_resolution = 2048
 texture_size = 1024
 frequency = 0.002
-noise_strength = 200.0
+noise_strenght = 200.0
 biomes = ExtResource("4_sxxsq")
 sea_level = 0.45
 has_atmosphere = true
 gravity = 9.8
-revolution_speed = 0.01
+revolution_speed = 0.0
 rotation_speed = 0.0
 
 [node name="Moon" type="AnimatableBody2D" parent="Sun/Earth"]
@@ -57,7 +56,7 @@ planet_radius = 1024.0
 collision_resolution = 1024
 texture_size = 512
 frequency = 0.008
-noise_strength = 100.0
+noise_strenght = 100.0
 biomes = ExtResource("6_q01nn")
 gravity = 1.62
 revolution_speed = 0.05
@@ -74,5 +73,6 @@ texture = ExtResource("7_mlehb")
 polygon = PackedVector2Array(-6, -37, -5, -40, -4, -42, -3, -44, -2, -45, -1, -46, 1, -46, 2, -45, 3, -44, 4, -42, 5, -40, 6, -37, 6, 30, 5, 31, 3, 32, 3, 35, 4, 38, 5, 42, 5, 46, -5, 46, -5, 42, -4, 38, -3, 35, -3, 32, -5, 31, -6, 30)
 
 [node name="Camera2D" parent="Rocket" instance=ExtResource("6_stoxb")]
+ignore_rotation = true
 position_smoothing_speed = 1.0
 script = ExtResource("9_6pabj")

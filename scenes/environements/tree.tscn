@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://tkx64q4oq3p3"]
+
+[ext_resource type="Script" path="res://scripts/environements/landscape_element.gd" id="1_n7xmm"]
+[ext_resource type="Texture2D" uid="uid://baxwjopisygwl" path="res://assets/flora/trees/tree_trunk.png" id="1_ydkru"]
+[ext_resource type="Texture2D" uid="uid://cyir26cjbcu86" path="res://assets/flora/trees/tree_leaves.png" id="2_q51j4"]
+[ext_resource type="Material" uid="uid://bpiaottnr4mhp" path="res://materials/leaves_wind.tres" id="2_tfe3g"]
+[ext_resource type="Texture2D" uid="uid://de6l5j1amyof0" path="res://assets/flora/trees/burned_tree_trunk.png" id="3_kuhph"]
+
+[node name="Tree" type="Node2D"]
+script = ExtResource("1_n7xmm")
+
+[node name="Trunk" type="Sprite2D" parent="."]
+texture = ExtResource("1_ydkru")
+region_enabled = true
+region_rect = Rect2(0, 0, 10, 42)
+
+[node name="Leaves" type="Sprite2D" parent="Trunk"]
+z_index = -1
+material = ExtResource("2_tfe3g")
+position = Vector2(1, -30)
+texture = ExtResource("2_q51j4")
+
+[node name="BurnedTrunk" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -10)
+texture = ExtResource("3_kuhph")
