@@ -5,15 +5,15 @@ extends CelestialBody
 @export_category("Generation Settings")
 @export var world_seed: int = -1
 @export var planet_radius: float
-@export var collision_resolution: int
-var collision_shape: CollisionPolygon2D
+
 
 @export_category("Height Map Settings")
-var height_map: NoiseTexture2D
-var height_map_image: Image
 @export var texture_size: int
 @export var frequency: float
 @export var noise_strength: float
+
+var height_map: NoiseTexture2D
+var height_map_image: Image
 
 
 @export_category("Environnement Settings")
@@ -22,24 +22,25 @@ var height_map_image: Image
 @export var has_atmosphere: bool
 
 
-# Shaders
+@export_category("Optimization Settings")
+@export var collision_resolution: int
+@export var chunk_resolution: int
+var chunks: Array[CollisionPolygon2D] = []
+
+
 const ATMOSPHERE_SHADER: Shader = preload("res://shaders/atmosphere.gdshader")
 const PLANET_RENDERER_SHADER: Shader = preload("res://shaders/planet_renderer.gdshader")
 const SHADOW_SHADER: Shader = preload("res://shaders/planet_shadow_renderer.gdshader")
 
-
-# Variables
 var planet_renderer: ColorRect
 var shadow_renderer: ColorRect
 var atmosphere: ColorRect
 
 
-# Utils
 func map(value: float, in_min: float, in_max: float, out_min: float, out_max: float) -> float:
 	return (value - in_min) / (in_max - in_min) * (out_max - out_min) + out_min
 
 
-# Generation
 func get_noise_value(theta: float) -> float:
 	var x: int = int(map(cos(theta), -1, 1, 0, height_map.get_height() - 1))
 	var y: int = int(map(sin(theta), -1, 1, 0, height_map.get_height() - 1))
@@ -54,9 +55,8 @@ func get_terrain_height(theta: float) -> float:
 	return map(get_noise_value(theta), .45, 1, 0, 1) * noise_strength + planet_radius
 
 
-func get_biome(theta: float) -> Biome:
-	var noise_value: float = get_noise_value(theta)
-	return biomes.get_biome(noise_value)
+func get_terrain_position(theta: float) -> Vector2:
+	return Vector2(cos(theta), sin(theta)) * get_terrain_height(theta)
 
 
 func get_terrain_angle(theta: float) -> float:
@@ -64,6 +64,11 @@ func get_terrain_angle(theta: float) -> float:
 	var pos1 = Vector2(cos(theta + 0.01), sin(theta + 0.01)) * get_terrain_height(theta + 0.01)
 	
 	return (pos1 - pos0).angle()
+
+
+func get_biome(theta: float) -> Biome:
+	var noise_value: float = get_noise_value(theta)
+	return biomes.get_biome(noise_value)
 
 
 # TODO: Merge place_sprite and place_scene
@@ -84,14 +89,7 @@ func place_scene(scene: PackedScene, theta: float) -> void:
 	add_child(instance)
 
 
-func _ready():
-	super()
-	
-	# Change the seed if it is not set
-	if world_seed == -1:
-		world_seed = randi()
-
-	# Create the height map
+func create_height_map() -> void:
 	height_map = NoiseTexture2D.new()
 	height_map.height = texture_size
 	height_map.width = texture_size
@@ -104,32 +102,49 @@ func _ready():
 	await height_map.changed
 	height_map_image = height_map.get_image()
 
+
+func _ready():
+	super()
+	
+	if world_seed == -1:
+		world_seed = randi()
+
+	await create_height_map()
+
 	# Generate colision
-	# TODO: Remove collision with water
 	collision_resolution = max(collision_resolution, 3)
-	collision_shape = CollisionPolygon2D.new()
-	var collision_points: PackedVector2Array = []
+	chunk_resolution = max(chunk_resolution, 2)
+
+	var current_points: PackedVector2Array = []
 
 	for i in range(collision_resolution):
 		var theta = i * 2 * PI / collision_resolution
 
-		var height = get_terrain_height(theta)
-		var x: int = int(cos(theta) * height)
-		var y: int = int(sin(theta) * height)
-		
-		collision_points.append(Vector2(x, y))
+		var vertex = get_terrain_position(theta)
 
 		var biome = get_biome(theta)
+
+		if biome.biome_name == "ocean":
+			vertex *= .5
+		
+		current_points.append(vertex)
+
+		if i % chunk_resolution == 0:
+			if current_points.size() > 0:
+				var collision_shape: CollisionPolygon2D = CollisionPolygon2D.new()
+				chunks.append(collision_shape)
+				current_points.append(Vector2(0, 0))
+				collision_shape.set_polygon(current_points)
+				add_child(collision_shape)
+				current_points = [vertex]
+
+
 		var elements = biome.get_biome_composition().get_random_elements()
 		for element in elements:
 			if element is PackedScene:
 				place_scene(element, theta)
 			else:
 				place_sprite(element, theta)
-
-	collision_shape.set_polygon(collision_points)
-	collision_shape.z_index = 10
-	add_child(collision_shape)
 
 	# Set up atmosphere
 	if has_atmosphere:
@@ -158,6 +173,7 @@ func _ready():
 	planet_renderer.material.set_shader_parameter("biome_ramp", biomes.get_color_gradient(64))
 	planet_renderer.material.set_shader_parameter("sea_level", sea_level)
 
+	
 	current_camera.get_node("PlanetRendering").add_child(planet_renderer)
 	
 	# Set up shadow renderer
@@ -182,3 +198,15 @@ func _process(_delta):
 	if has_atmosphere:
 		atmosphere.material.set_shader_parameter("planet_position", global_position)
 		atmosphere.material.set_shader_parameter("planet_rotation", global_rotation)
+
+
+func _physics_process(_delta):
+	return 
+	# TODO: Optimize this
+	for chunk: CollisionPolygon2D in chunks:
+		for movable_body: MovableBody in BodyHandler.get_movable_bodies():
+			if chunk.global_position.distance_to(movable_body.global_position) < planet_radius:
+				chunk.disabled = false
+
+			else:
+				chunk.disabled = true

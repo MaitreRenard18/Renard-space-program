@@ -12,6 +12,9 @@ func _ready():
 
 
 func _process(_delta):
+	if not current_camera:
+		return
+	
 	RenderingServer.global_shader_parameter_set("camera_zoom", current_camera.zoom)
 	RenderingServer.global_shader_parameter_set("camera_rotation", current_camera.global_rotation)
 	

@@ -69,7 +69,7 @@ vec4 get_biome_color(vec2 world_position) {
 
         terrain_variation = texture(height_map, vec2(x, y)).r;
     }
-    
+
     return texture(biome_ramp, vec2(terrain_variation, 0));
 }
 

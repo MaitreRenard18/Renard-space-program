@@ -1,17 +1,21 @@
-[gd_scene load_steps=11 format=3 uid="uid://b4y6f8xla0xk1"]
+[gd_scene load_steps=12 format=3 uid="uid://b4y6f8xla0xk1"]
 
 [ext_resource type="Script" path="res://scripts/physics/movable_body.gd" id="2_wbyer"]
-[ext_resource type="Script" path="res://scripts/generation/telluric_planet.gd" id="4_knn51"]
+[ext_resource type="Script" path="res://scripts/generation/planet.gd" id="4_knn51"]
 [ext_resource type="Resource" uid="uid://byo7d36x7w0rt" path="res://presets/earth_presset.tres" id="4_sxxsq"]
 [ext_resource type="Texture2D" uid="uid://ds25ryiodqbin" path="res://assets/fauna/cow.png" id="6_6rhbk"]
 [ext_resource type="Resource" uid="uid://l3f6n7lhl00y" path="res://presets/moon_presset.tres" id="6_q01nn"]
 [ext_resource type="PackedScene" uid="uid://vbxw2sgh4x0h" path="res://scenes/camera.tscn" id="6_stoxb"]
 [ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://assets/rocket.png" id="7_mlehb"]
-[ext_resource type="Script" path="res://scripts/attached_cam.gd" id="9_6pabj"]
+[ext_resource type="Script" path="res://scripts/cameras/attached_cam.gd" id="9_6pabj"]
 [ext_resource type="PackedScene" uid="uid://dt41p2b0utosy" path="res://scenes/sun.tscn" id="9_rgknk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ap4a8"]
 size = Vector2(14, 10)
+
+[sub_resource type="SphereMesh" id="SphereMesh_pkotb"]
+radial_segments = 4
+rings = 1024
 
 [node name="SolarSystem" type="Node2D"]
 
@@ -38,14 +42,15 @@ sync_to_physics = false
 script = ExtResource("4_knn51")
 world_seed = 926
 planet_radius = 2048.0
-collision_resolution = 2048
 texture_size = 1024
 frequency = 0.002
 noise_strength = 200.0
 biomes = ExtResource("4_sxxsq")
 sea_level = 0.45
 has_atmosphere = true
-gravity = 9.8
+collision_resolution = 4096
+chunk_resolution = 20
+gravity = 1.0
 revolution_speed = 0.01
 rotation_speed = 0.0
 
@@ -54,17 +59,20 @@ position = Vector2(4500, -4500)
 sync_to_physics = false
 script = ExtResource("4_knn51")
 planet_radius = 1024.0
-collision_resolution = 1024
 texture_size = 512
 frequency = 0.008
 noise_strength = 100.0
 biomes = ExtResource("6_q01nn")
-gravity = 1.62
-revolution_speed = 0.05
-rotation_speed = 0.05
+collision_resolution = 1024
+chunk_resolution = 20
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Sun/Earth"]
+modulate = Color(0, 0.52549, 0.956863, 1)
+scale = Vector2(4105, 4105)
+mesh = SubResource("SphereMesh_pkotb")
 
 [node name="Rocket" type="RigidBody2D" parent="."]
-position = Vector2(-2025, 38715)
+position = Vector2(-2025, 37284)
 script = ExtResource("2_wbyer")
 
 [node name="Rocket" type="Sprite2D" parent="Rocket"]

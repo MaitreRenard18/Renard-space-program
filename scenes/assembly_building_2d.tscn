@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://bxukmnwkvuvv2"]
+
+[ext_resource type="Script" path="res://scripts/cameras/y_cam.gd" id="1_bde02"]
+[ext_resource type="Texture2D" uid="uid://c6djbop88o0n2" path="res://assets/assembly_background.png" id="1_yadtp"]
+[ext_resource type="Texture2D" uid="uid://bu1kdkh8tcw6g" path="res://assets/assembly.png" id="2_g24nx"]
+[ext_resource type="Texture2D" uid="uid://dtu8lsn1kutlf" path="res://assets/rocket.png" id="4_aqntv"]
+
+[node name="AssemblyBuilding" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(10, 10)
+script = ExtResource("1_bde02")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="Camera2D/CanvasLayer"]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="Camera2D/CanvasLayer/ParallaxBackground"]
+motion_scale = Vector2(0.9, 0.9)
+motion_offset = Vector2(9.6, 0)
+
+[node name="TextureRect" type="TextureRect" parent="Camera2D/CanvasLayer/ParallaxBackground/ParallaxLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_yadtp")
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="Camera2D/CanvasLayer/ParallaxBackground"]
+
+[node name="TextureRect" type="TextureRect" parent="Camera2D/CanvasLayer/ParallaxBackground/ParallaxLayer2"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_g24nx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 82)
+texture = ExtResource("4_aqntv")

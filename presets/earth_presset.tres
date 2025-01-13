@@ -11,7 +11,7 @@
 [sub_resource type="Resource" id="Resource_12a42"]
 script = ExtResource("1_m1p3q")
 biome_name = "ocean"
-biome_color = Color(0, 0.52549, 0.956863, 1)
+biome_color = Color(0, 0.52549, 0.956863, 0)
 
 [sub_resource type="Resource" id="Resource_1egh1"]
 script = ExtResource("4_dff37")

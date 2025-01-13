@@ -4,6 +4,7 @@ class_name BiomeCollection
 @export var offsets: PackedFloat32Array
 @export var biomes: Array[Biome]
 
+
 func _sort() -> void:
 	for i: int in range(1, offsets.size()):
 		var j: int = i
